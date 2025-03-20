@@ -33,6 +33,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeNGTemplate.API.Tools", "API\PrimeNGTemplate.API.Tools\PrimeNGTemplate.API.Tools.csproj", "{352B878C-E55C-43C5-BF6F-1EC605E38759}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B058B03-9752-4D89-9920-7D4C3664032A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
