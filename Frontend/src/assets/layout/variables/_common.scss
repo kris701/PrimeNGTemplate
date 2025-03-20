@@ -1,0 +1,33 @@
+:root {
+    --primary-color: var(--p-primary-color);
+    --primary-contrast-color: var(--p-primary-contrast-color);
+    --text-color: var(--p-text-color);
+    --text-color-secondary: var(--p-text-muted-color);
+    --surface-border: var(--p-content-border-color);
+    --surface-card: var(--p-content-background);
+    --surface-hover: var(--p-content-hover-background);
+    --surface-overlay: var(--p-overlay-popover-background);
+    --transition-duration: var(--p-transition-duration);
+    --maskbg: var(--p-mask-background);
+    --content-border-radius: var(--p-content-border-radius);
+    --layout-section-transition-duration: 0.2s;
+    --element-transition-duration: var(--p-transition-duration);
+    --focus-ring-width: var(--p-focus-ring-width);
+    --focus-ring-style: var(--p-focus-ring-style);
+    --focus-ring-color: var(--p-focus-ring-color);
+    --focus-ring-offset: var(--p-focus-ring-offset);
+    --focus-ring-shadow: var(--p-focus-ring-shadow);
+
+    // Custome theme colors
+    --p-primengtemplate-50: #c3eec5;
+    --p-primengtemplate-100: #8dce8f;
+    --p-primengtemplate-200: #60b463;
+    --p-primengtemplate-300: #4e9451;
+    --p-primengtemplate-400: #408042;
+    --p-primengtemplate-500: #386d3a;
+    --p-primengtemplate-600: #214222;
+    --p-primengtemplate-700: #244724;
+    --p-primengtemplate-800: #183019;
+    --p-primengtemplate-900: #162b16;
+    --p-primengtemplate-950: #101f10;
+}

@@ -1,0 +1,8 @@
+CREATE PROCEDURE [COR].[SP_GetAllUsers]
+	@ExecID UNIQUEIDENTIFIER
+AS
+BEGIN TRANSACTION
+	SELECT
+		A.PK_ID, A.FirstName, A.LastName, A.Email, A.PhoneNumber, (SELECT COUNT(*) FROM [COR].[UserPermissions] WHERE FK_User_ID = A.PK_ID) AS PermissionsCount
+	FROM [COR].[Users] AS A
+COMMIT
