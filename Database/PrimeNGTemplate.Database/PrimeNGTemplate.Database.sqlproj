@@ -70,23 +70,23 @@
     <Folder Include="Core\Programmability\Stored Procedures\Permissions" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Core\Schemas\COR_CoreSchema.sql" />
-    <Build Include="Core\Tables\COR_Users.sql" />
-    <Build Include="Core\Tables\COR_UserPermissions.sql" />
-    <Build Include="Core\Tables\COR_Permissions.sql" />
-    <Build Include="Global\Programmability\Types\GLB_GuidListType.sql" />
-    <Build Include="Global\Schema\GLB_GlobalSchema.sql" />
-    <Build Include="Global\Programmability\Types\GLB_StringListType.sql" />
+    <Build Include="Core\Schemas\CoreSchema.sql" />
+    <Build Include="Core\Tables\Users.sql" />
+    <Build Include="Core\Tables\UserPermissions.sql" />
+    <Build Include="Core\Tables\Permissions.sql" />
+    <Build Include="Global\Programmability\Types\GuidListType.sql" />
+    <Build Include="Global\Schema\GlobalSchema.sql" />
+    <Build Include="Global\Programmability\Types\StringListType.sql" />
     <PostDeploy Include="postDeploy.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\COR_SP_Authenticate.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\COR_SP_Impersonate.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\COR_SP_UpdatePassword.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\COR_SP_AddUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\COR_SP_DeleteUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\COR_SP_GetAllUsers.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\COR_SP_GetUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\COR_SP_UpdateUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Permissions\COR_SP_AddPermissionIfNotExist.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Permissions\COR_SP_GetAllPermissions.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_Authenticate.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_Impersonate.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_UpdatePassword.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_AddUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_DeleteUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_GetAllUsers.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_GetUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_UpdateUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_AddPermissionIfNotExist.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_GetAllPermissions.sql" />
   </ItemGroup>
 </Project>
