@@ -10,18 +10,18 @@ using PrimeNGTemplate.Plugins.Core.Models.Shared.Users;
 namespace PrimeNGTemplate.Plugins.Core.Controllers
 {
 	/// <summary>
-	/// Controller endpoints for company users
+	/// Controller endpoints for users
 	/// </summary>
 	/// <response code="401">If Unauthroized.</response>
 	[Authorize]
 	[Produces("application/json")]
 	public class UsersController : ControllerBase
 	{
-		private readonly IDBClient _dbClient;
+		private readonly UsersInterface _interface;
 
 		public UsersController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient)
 		{
-			_dbClient = dbClient;
+			_interface = new UsersInterface(dbClient);
 		}
 
 		/// <summary>
@@ -32,11 +32,10 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		/// <response code="200">Returns the newly created user</response>
 		[HttpPost(Endpoints.Core.Users.Post_AddUser)]
 		[Authorize(Roles = PermissionsTable.Core_Users_Write)]
-		public async Task<IActionResult> Post_AddUser([FromBody] AddCompanyUserInput inputModel)
+		public async Task<IActionResult> Post_AddUser([FromBody] AddUserInput inputModel)
 		{
 			User.SetExecID(inputModel);
-			var model = new AddUserModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
+			return Ok(await _interface.addModel.ExecuteAsync(inputModel));
 		}
 
 		/// <summary>
@@ -54,8 +53,7 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 				User.HasPermission(PermissionsTable.Core_User_EditProfile) &&
 				User.GetExecID() != inputModel.ExecID)
 				return Unauthorized("You can only modify your own user!");
-			var model = new UpdateUserModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
+			return Ok(await _interface.updateModel.ExecuteAsync(inputModel));
 		}
 
 		/// <summary>
@@ -69,8 +67,7 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		{
 			var inputModel = new EmptyModel();
 			User.SetExecID(inputModel);
-			var model = new GetAllUsersModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
+			return Ok(await _interface.getAllModel.ExecuteAsync(inputModel));
 		}
 
 		/// <summary>
@@ -84,8 +81,7 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		public async Task<IActionResult> Get_User([FromQuery] GetModel inputModel)
 		{
 			User.SetExecID(inputModel);
-			var model = new GetUserModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
+			return Ok(await _interface.getModel.ExecuteAsync(inputModel));
 		}
 
 		/// <summary>
@@ -99,8 +95,7 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		public async Task<IActionResult> Delete_User([FromQuery] DeleteModel inputModel)
 		{
 			User.SetExecID(inputModel);
-			var model = new DeleteUserModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
+			return Ok(await _interface.deleteModel.ExecuteAsync(inputModel));
 		}
 	}
 }

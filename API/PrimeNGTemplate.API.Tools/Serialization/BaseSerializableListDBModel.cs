@@ -14,7 +14,7 @@ namespace PrimeNGTemplate.API.Tools.Serialization
 			var result = await _client.ExecuteAsync(TargetSTP, input);
 			if (result.Count == 0)
 				return new List<TOut>();
-			var models = result[0].FillAll<TOut>();
+			var models = result[0].FillAll<TOut>(result);
 			await PostExecuteAsync(models);
 			return models;
 		}

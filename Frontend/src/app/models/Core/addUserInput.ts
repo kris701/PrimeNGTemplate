@@ -1,6 +1,6 @@
 import { BaseExecIDModel } from "./baseExecIDModel";
 
-export interface AddCompanyUserInput extends BaseExecIDModel {
+export interface AddUserInput extends BaseExecIDModel {
     firstName: string;
     lastName: string;
     email: string;

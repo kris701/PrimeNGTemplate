@@ -16,7 +16,7 @@ namespace PrimeNGTemplate.API.Tools.Serialization
 				return new();
 			if (result[0].Count == 0)
 				return new();
-			var model = result[0][0].Fill<TOut>();
+			var model = result[0][0].Fill<TOut>(result);
 			await PostExecuteAsync(model);
 			return model;
 		}

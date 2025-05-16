@@ -24,7 +24,7 @@ namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
 		public string LoginName { get; set; }
 
 		[Required]
-		[DatabaseSharpIgnore(IgnoreAsParameter = false)]
+		[DatabaseSharp(FillTable = 1, ColumnName = "FK_Permission_ID")]
 		public List<string> Permissions { get; set; }
 	}
 }

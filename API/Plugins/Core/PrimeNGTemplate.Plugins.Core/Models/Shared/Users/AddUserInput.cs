@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
 {
-	public class AddCompanyUserInput : BaseExecIDModel
+	public class AddUserInput : BaseExecIDModel
 	{
 		[Required]
 		public string FirstName { get; set; }
