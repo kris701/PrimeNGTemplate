@@ -1,4 +1,5 @@
-﻿using PrimeNGTemplate.API.Tools;
+﻿using DatabaseSharp.Models;
+using PrimeNGTemplate.API.Tools;
 using System.ComponentModel.DataAnnotations;
 
 namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
@@ -22,5 +23,7 @@ namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
 
 		[Required]
 		public List<string> Permissions { get; set; }
+		[Required]
+		public bool IsActive { get; set; }
 	}
 }

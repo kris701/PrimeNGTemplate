@@ -14,7 +14,7 @@
     align-items: center;
 
     .layout-topbar-logo-container {
-        width: 20rem;
+        width: 15rem;
         display: flex;
         align-items: center;
     }
@@ -126,7 +126,6 @@
             padding: 1rem;
             right: 2rem;
             top: 4rem;
-            min-width: 15rem;
             border: 1px solid var(--surface-border);
 
             .layout-topbar-menu-content {
@@ -137,7 +136,7 @@
                 display: flex;
                 width: 100%;
                 height: auto;
-                justify-content: flex-start;
+                justify-content: flex-center;
                 border-radius: var(--content-border-radius);
                 padding: 0.5rem 1rem;
 

@@ -8,4 +8,5 @@ export interface AddUserInput extends BaseExecIDModel {
     loginName: string;
     password: string;
     permissions: string[];
+    isActive: boolean;
 }

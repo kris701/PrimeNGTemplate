@@ -6,11 +6,12 @@ CREATE PROCEDURE [COR].[SP_AddUser]
 	@PhoneNumber NVARCHAR(MAX),
 	@LoginName NVARCHAR(100),
 	@Password NVARCHAR(MAX),
-	@Permissions [GLB].[StringListType] READONLY
+	@Permissions [GLB].[StringListType] READONLY,
+	@IsActive BIT
 AS
 BEGIN TRANSACTION
 	DECLARE @ID UNIQUEIDENTIFIER = NEWID()
-	INSERT INTO [COR].[Users] VALUES (@ID, @FirstName, @LastName, @Email, @PhoneNumber, @LoginName, @Password);
+	INSERT INTO [COR].[Users] VALUES (@ID, @FirstName, @LastName, @Email, @PhoneNumber, @LoginName, @Password, @IsActive, GETUTCDATE(), NULL);
 	INSERT INTO [COR].[UserPermissions] SELECT NEWID(), @ID, * FROM @Permissions;
 	EXEC [COR].[SP_GetUser] @ExecID, @ID
 COMMIT

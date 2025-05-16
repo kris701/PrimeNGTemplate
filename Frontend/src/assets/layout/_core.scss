@@ -22,3 +22,10 @@ a {
 .layout-wrapper {
     min-height: 100vh;
 }
+
+.rowclickable {
+    cursor: pointer;
+}
+.rowclickable:hover {
+    background: var(--p-datatable-row-hover-background) !important;
+}

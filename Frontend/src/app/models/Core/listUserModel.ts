@@ -5,4 +5,7 @@ export interface ListUserModel {
     email: string;
     phoneNumber: string;
     permissionsCount: number;
+    isActive: boolean;
+    createdAt: string | Date;
+    updatedAt: string | Date | null;
 }

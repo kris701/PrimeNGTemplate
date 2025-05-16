@@ -8,4 +8,7 @@ export interface UserModel extends BaseExecIDModel {
     phoneNumber: string;
     loginName: string;
     permissions: string[];
+    isActive: boolean;
+    createdAt: string | Date;
+    updatedAt: string | Date | null;
 }

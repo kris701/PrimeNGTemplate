@@ -26,5 +26,11 @@ namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
 		[Required]
 		[DatabaseSharp(FillTable = 1, ColumnName = "FK_Permission_ID")]
 		public List<string> Permissions { get; set; }
+		[Required]
+		public bool IsActive { get; set; }
+		[DatabaseSharpIgnore(IgnoreAsFill = false)]
+		public DateTime CreatedAt { get; set; }
+		[DatabaseSharpIgnore(IgnoreAsFill = false)]
+		public DateTime? UpdatedAt { get; set; }
 	}
 }
