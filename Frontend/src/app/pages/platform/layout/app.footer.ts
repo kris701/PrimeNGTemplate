@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
     selector: 'app-footer',
     template: `<div class="layout-footer">
         Company Name © 2025
+        <p-tag severity="success" value="Staff Mode" *ngIf="isStaff" />
         <p-tag severity="warn" value="Impersonating user" *ngIf="isImpersonating" />
     </div>`
 })

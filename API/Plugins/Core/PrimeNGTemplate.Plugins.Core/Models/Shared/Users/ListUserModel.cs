@@ -11,6 +11,7 @@ namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
+		public string LoginName { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsStaff { get; set; }
 		public DateTime CreatedAt { get; set; }

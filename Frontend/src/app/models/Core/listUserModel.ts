@@ -3,6 +3,7 @@ export interface ListUserModel {
     firstName: string;
     lastName: string;
     email: string;
+    loginName: string;
     isActive: boolean;
     isStaff: boolean;
     createdAt: string | Date;

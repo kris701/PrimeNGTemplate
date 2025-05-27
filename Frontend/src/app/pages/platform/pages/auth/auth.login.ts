@@ -96,7 +96,7 @@ export class Login {
                 });
                 localStorage.setItem("perms", permsStr);
                 localStorage.setItem("jwtToken", c.jwtToken);
-                this.router.navigate(["/"]);
+                this.router.navigate(["/platform"]);
             }
         }, e => {
             alert("Username or Password is incorrect!");

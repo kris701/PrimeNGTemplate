@@ -6,6 +6,7 @@ BEGIN TRANSACTION
 		A.PK_ID, 
 		A.FirstName, 
 		A.LastName, 
+		A.LoginName, 
 		A.Email, 
 		A.IsActive,
 		A.IsStaff,
