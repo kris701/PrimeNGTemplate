@@ -43,7 +43,7 @@ import { FieldsetModule } from 'primeng/fieldset';
     ],
     template: `
         <div class="flex flex-col gap-2">
-            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="showChangePassword()" [style]="{ width: '100%' }" [hidden]="!canChangePassword" />
+            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="showChangePassword()" [style]="{ width: '100%' }" [hidden]="!canWriteSelf" />
             <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="showEditProfile()" [style]="{ width: '100%' }" />
             <p-button icon="pi pi-sign-out" label="Log Out" severity="danger" pTooltip="Log out and return to the login screen" (click)="logOut()" [disabled]="isImpersonating" [style]="{ width: '100%' }" />
 
@@ -64,20 +64,19 @@ import { FieldsetModule } from 'primeng/fieldset';
                     <p-fieldset legend="Login Information">
                         <div class="flex flex-col gap-2">
                             <p>Your login name must be unique!</p>
-                            <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canEditProfile" label="Login Name" icon="pi-sign-in" />
+                            <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canWriteSelf" label="Login Name" icon="pi-sign-in" />
                         </div>
                     </p-fieldset>
                     <p-fieldset legend="General Information">
                         <div class="flex flex-col gap-2">
-                            <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canEditProfile" label="First Name" icon="pi-pencil" />
-                            <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canEditProfile" label="Last Name" icon="pi-pencil" />
-                            <app-floattextinput [(value)]="currentUser.email" [disabled]="!canEditProfile" label="E-Mail" icon="pi-envelope" />
-                            <app-floattextinput [(value)]="currentUser.phoneNumber" [disabled]="!canEditProfile" label="Phone Number" icon="pi-phone" />
+                            <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWriteSelf" label="First Name" icon="pi-pencil" />
+                            <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWriteSelf" label="Last Name" icon="pi-pencil" />
+                            <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWriteSelf" label="E-Mail" icon="pi-envelope" />
                         </div>
                     </p-fieldset>
                 </div>
                 <ng-template #footer>
-                    <p-button label="Save" icon="pi pi-save" (click)="updateUser()" [hidden]="!canEditProfile" />
+                    <p-button label="Save" icon="pi pi-save" (click)="updateUser()" [hidden]="!canWriteSelf" />
                 </ng-template>
             </p-dialog>
         </div>
@@ -92,8 +91,7 @@ export class UserMenu {
     newPassword1: string = '';
     newPassword2: string = '';
 
-    canChangePassword: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_ChangePassword);
-    canEditProfile: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_EditProfile);
+    canWriteSelf: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_Users_Own_Write);
     isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
 
     editProfileVisible: boolean = false;
@@ -131,7 +129,7 @@ export class UserMenu {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword1
         } as UpdatePasswordInput;
-        this.http.post<UpdatePasswordInput>(APIURL + Endpoints.Core.Authentication.Post_UpdatePassword, input).subscribe(() => {
+        this.http.patch<UpdatePasswordInput>(APIURL + Endpoints.Core.Users.Patch_UpdatePassword, input).subscribe(() => {
             this.router.navigate(['/platform/auth/login']);
         });
     }

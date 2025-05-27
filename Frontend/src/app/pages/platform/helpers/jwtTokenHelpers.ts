@@ -25,6 +25,16 @@ export class JWTTokenHelpers
         return "";
     }
 
+    public static IsStaff(): boolean {
+        var token = localStorage.getItem('jwtToken');
+        if (token) {
+            const helper = new JwtHelperService();
+            var result = helper.decodeToken<JWTTokenModel>(token);
+            if (result && result.isstaff == 'True') return true;
+        }
+        return false;
+    }
+
     public static IsExpired() : boolean{
         var token = localStorage.getItem("jwtToken");
         if (token){

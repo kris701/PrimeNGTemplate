@@ -1,7 +1,7 @@
 ﻿using DatabaseSharp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PrimeNGTemplate.Plugins.Core.DatabaseInterface;
+using PrimeNGTemplate.Plugins.Core.DatabaseInterface.Permissions;
 using PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication;
 
 namespace PrimeNGTemplate.Plugins.Core.Services
@@ -20,29 +20,36 @@ namespace PrimeNGTemplate.Plugins.Core.Services
 			await _model.ExecuteAsync(new PermissionModel(
 				PermissionsTable.Core_Users_Read,
 				"Read All Users",
-				"Ability to read all users."));
+				"Ability to read all users.",
+				true));
 			await _model.ExecuteAsync(new PermissionModel(
 				PermissionsTable.Core_Users_Write,
-				"Read All Users",
-				"Ability to create, update and delete users."));
+				"Write All Users",
+				"Ability to create, update and delete users.",
+				true));
 
 			await _model.ExecuteAsync(new PermissionModel(
 				PermissionsTable.Core_User_Impersonate,
 				"Impersonating",
-				"Ability to impersonate any one user."));
+				"Ability to impersonate any one user.",
+				true));
+
 			await _model.ExecuteAsync(new PermissionModel(
-				PermissionsTable.Core_User_ChangePassword,
-				"Change Password",
-				"Ability to change your own password."));
+				PermissionsTable.Core_Users_Own_Read,
+				"Read your own user",
+				"Ability to read your own user.",
+				false));
 			await _model.ExecuteAsync(new PermissionModel(
-				PermissionsTable.Core_User_EditProfile,
-				"Edit your profile",
-				"Ability to edit your own user."));
+				PermissionsTable.Core_Users_Own_Write,
+				"Write your own user",
+				"Ability to modify your own user.",
+				false));
 
 			await _model.ExecuteAsync(new PermissionModel(
 				PermissionsTable.Core_Permission_Read,
 				"Permission Read",
-				"Ability to fetch all permissions names and descriptions."));
+				"Ability to fetch all permissions names and descriptions.",
+				false));
 		}
 	}
 }

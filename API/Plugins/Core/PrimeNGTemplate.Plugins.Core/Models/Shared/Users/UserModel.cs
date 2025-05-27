@@ -17,8 +17,6 @@ namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
 
 		[Required]
 		public string Email { get; set; }
-		[Required]
-		public string PhoneNumber { get; set; }
 
 		[Required]
 		public string LoginName { get; set; }
@@ -28,6 +26,8 @@ namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
 		public List<string> Permissions { get; set; }
 		[Required]
 		public bool IsActive { get; set; }
+		[Required]
+		public bool IsStaff { get; set; }
 		[DatabaseSharpIgnore(IgnoreAsFill = false)]
 		public DateTime CreatedAt { get; set; }
 		[DatabaseSharpIgnore(IgnoreAsFill = false)]

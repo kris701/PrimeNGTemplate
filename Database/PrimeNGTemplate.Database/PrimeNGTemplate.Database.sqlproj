@@ -68,6 +68,7 @@
     <Folder Include="Core\Programmability\Stored Procedures\Authentication" />
     <Folder Include="Core\Programmability\Stored Procedures\Users" />
     <Folder Include="Core\Programmability\Stored Procedures\Permissions" />
+    <Folder Include="Core\Programmability\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Core\Schemas\CoreSchema.sql" />
@@ -88,5 +89,6 @@
     <Build Include="Core\Programmability\Stored Procedures\Users\SP_UpdateUser.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_AddPermissionIfNotExist.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_GetAllPermissions.sql" />
+    <Build Include="Core\Programmability\Functions\IsStaff.sql" />
   </ItemGroup>
 </Project>

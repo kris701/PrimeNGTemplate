@@ -6,14 +6,17 @@ public static class Endpoints {
 		public static class Authentication {
 			public const string Name = "endpoints/core/authentication";
 			public const string Post_Authenticate = "endpoints/core/authentication";
-			public const string Post_UpdatePassword = "endpoints/core/authentication/updatepassword";
 			public const string Post_Impersonate = "endpoints/core/authentication/impersonate";
-			public const string Get_AllPermissions = "endpoints/core/authentication/permissions";
+		}
+		public static class Permissions {
+			public const string Name = "endpoints/core/permissions";
+			public const string Get_AllPermissions = "endpoints/core/permissions";
 		}
 		public static class Users {
 			public const string Name = "endpoints/core/users";
 			public const string Post_AddUser = "endpoints/core/users";
 			public const string Patch_UpdateUser = "endpoints/core/users";
+			public const string Patch_UpdatePassword = "endpoints/core/users/updatepassword";
 			public const string Get_AllUsers = "endpoints/core/users/users";
 			public const string Get_User = "endpoints/core/users";
 			public const string Delete_User = "endpoints/core/users";

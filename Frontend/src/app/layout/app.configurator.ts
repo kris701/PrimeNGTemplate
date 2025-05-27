@@ -270,7 +270,7 @@ export class AppConfigurator {
 
     primaryColors = computed<SurfacesType[]>(() => {
         const presetPalette = presets[this.layoutService.layoutConfig().preset as KeyOfType<typeof presets>].primitive;
-        const colors = ['helvion', 'emerald', 'green', 'lime', 'orange', 'amber', 'yellow', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
+        const colors = ['custom', 'emerald', 'green', 'lime', 'orange', 'amber', 'yellow', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
         const palettes: SurfacesType[] = [];
 
         colors.forEach((color) => {
@@ -287,21 +287,21 @@ export class AppConfigurator {
         const color: SurfacesType = this.primaryColors().find((c) => c.name === this.selectedPrimaryColor()) || {};
         const preset = this.layoutService.layoutConfig().preset;
 
-        if (color.name === 'helvion') {
+        if (color.name === 'custom') {
             return {
                 semantic: {
                     primary: {
-                        50: 'var(--p-helvion-50)',
-                        100: 'var(--p-helvion-100)',
-                        200: 'var(--p-helvion-200)',
-                        300: 'var(--p-helvion-300)',
-                        400: 'var(--p-helvion-400)',
-                        500: 'var(--p-helvion-500)',
-                        600: 'var(--p-helvion-600)',
-                        700: 'var(--p-helvion-700)',
-                        800: 'var(--p-helvion-800)',
-                        900: 'var(--p-helvion-900)',
-                        950: 'var(--p-helvion-950)'
+                        50: 'var(--p-custom-50)',
+                        100: 'var(--p-custom-100)',
+                        200: 'var(--p-custom-200)',
+                        300: 'var(--p-custom-300)',
+                        400: 'var(--p-custom-400)',
+                        500: 'var(--p-custom-500)',
+                        600: 'var(--p-custom-600)',
+                        700: 'var(--p-custom-700)',
+                        800: 'var(--p-custom-800)',
+                        900: 'var(--p-custom-900)',
+                        950: 'var(--p-custom-950)'
                     },
                     colorScheme: {
                         light: {

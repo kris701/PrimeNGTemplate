@@ -7,9 +7,8 @@ BEGIN TRANSACTION
 		A.FirstName, 
 		A.LastName, 
 		A.Email, 
-		A.PhoneNumber, 
-		(SELECT COUNT(*) FROM [COR].[UserPermissions] WHERE FK_User_ID = A.PK_ID) AS PermissionsCount,
 		A.IsActive,
+		A.IsStaff,
 		A.CreatedAt,
 		A.UpdatedAt
 	FROM [COR].[Users] AS A

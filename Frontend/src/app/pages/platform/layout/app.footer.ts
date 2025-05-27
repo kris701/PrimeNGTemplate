@@ -13,9 +13,11 @@ import { CommonModule } from '@angular/common';
     </div>`
 })
 export class AppFooter {
+    isStaff: boolean = false;
     isImpersonating: boolean = false;
 
     ngOnInit() {
+        this.isStaff = JWTTokenHelpers.IsStaff();
         if (localStorage.getItem('impersonating')) this.isImpersonating = true;
     }
 }

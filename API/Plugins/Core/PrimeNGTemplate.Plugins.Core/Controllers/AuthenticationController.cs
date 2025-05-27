@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using PrimeNGTemplate.API.Tools;
 using PrimeNGTemplate.API.Tools.Helpers;
-using PrimeNGTemplate.Plugins.Core.DatabaseInterface;
 using PrimeNGTemplate.Plugins.Core.DatabaseInterface.Authentication;
 using PrimeNGTemplate.Plugins.Core.Models.Internal.Authentication;
 using PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication;
@@ -54,38 +52,6 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		{
 			User.SetExecID(inputModel);
 			var model = new ImpersonateModel(_dbClient, _settings);
-			return Ok(await model.ExecuteAsync(inputModel));
-		}
-
-		/// <summary>
-		/// Change your password
-		/// </summary>
-		/// <param name="inputModel"></param>
-		/// <returns></returns>
-		/// <exception cref="Exception"></exception>
-		/// <response code="200">If password change was successful.</response>
-		[HttpPost(Endpoints.Core.Authentication.Post_UpdatePassword)]
-		[Authorize(Roles = PermissionsTable.Core_User_ChangePassword)]
-		public async Task<IActionResult> Post_UpdatePassword([FromBody] UpdatePasswordInput inputModel)
-		{
-			User.SetExecID(inputModel);
-			var model = new UpdatePasswordModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
-		}
-
-		/// <summary>
-		/// Get all the permissions in the system
-		/// </summary>
-		/// <returns></returns>
-		/// <exception cref="Exception"></exception>
-		/// <response code="200">A list of all permissions and descriptions½.</response>
-		[HttpPost(Endpoints.Core.Authentication.Get_AllPermissions)]
-		[Authorize(Roles = PermissionsTable.Core_Permission_Read)]
-		public async Task<IActionResult> Get_AllPermissions()
-		{
-			var inputModel = new EmptyModel();
-			User.SetExecID(inputModel);
-			var model = new GetAllPermissionsModel(_dbClient);
 			return Ok(await model.ExecuteAsync(inputModel));
 		}
 	}

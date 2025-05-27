@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PrimeNGTemplate.Plugins.Core.Models.Internal.Authentication;
 using PrimeNGTemplate.Plugins.Core.Services;
 using System.Reflection;
 using System.Text;
@@ -38,6 +39,7 @@ namespace PrimeNGTemplate.Plugins.Core
 
 		public override void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSingleton(new JWTSettings(_jwtSecret, _jwtLifetime));
 			var key = Encoding.ASCII.GetBytes(_jwtSecret);
 			services.AddAuthentication(options =>
 			{

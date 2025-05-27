@@ -5,10 +5,10 @@ export interface UserModel extends BaseExecIDModel {
     firstName: string;
     lastName: string;
     email: string;
-    phoneNumber: string;
     loginName: string;
     permissions: string[];
     isActive: boolean;
+    isStaff: boolean;
     createdAt: string | Date;
     updatedAt: string | Date | null;
 }

@@ -9,15 +9,14 @@ import { ButtonModule } from 'primeng/button';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { SelectModule } from 'primeng/select';
-import { UserInterface } from '../interfaces/usersinterface';
 import { TooltipModule } from 'primeng/tooltip';
 import { Endpoints } from '../../../../Endpoints';
 import { APIURL } from '../../../../globals';
 import { AuthenticationOutput } from '../../../models/Core/authenticationOutput';
 import { ImpersonateInput } from '../../../models/Core/impersonateInput';
 import { JWTTokenModel } from '../../../models/Core/jWTTokenModel';
-import { FloatMultiSelectControl } from '../../../common/floatmultiselectcontrol';
 import { FloatSelectControl } from '../../../common/floatselectcontrol';
+import { ListUserModel } from '../../../models/Core/listUserModel';
 
 @Component({
     selector: 'app-impersonationmenu',
@@ -26,7 +25,7 @@ import { FloatSelectControl } from '../../../common/floatselectcontrol';
     template: `
         <div class="flex flex-col gap-2" *ngIf="!isImpersonating()">
             <span>Select a user to impersonate.</span>
-            <app-floatselect [(selected)]="targetID" [options]="userInterface.allUsers" (selectedChange)="impersonate()" icon="pi-user" />
+            <app-floatselect [(selected)]="targetID" [options]="allUsers" (selectedChange)="impersonate()" icon="pi-user" />
         </div>
         <div class="flex flex-col gap-4" *ngIf="isImpersonating()">
             <p-button icon="pi pi-eject" severity="danger" label="Stop Impersonating" (click)="stopImpersonate()" [style]="{ width: '100%' }" />
@@ -36,20 +35,26 @@ import { FloatSelectControl } from '../../../common/floatselectcontrol';
         class: 'hidden absolute top-[3.25rem] right-0 w-72 p-4 card border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]'
     }
 })
-export class ImpersonationMenu {
-    userInterface: UserInterface;
+export class ImpersonationMenu {    
     targetID: string = '';
+    allUsers : ListUserModel[] = []
 
     constructor(
         private router: Router,
-        private http: HttpClient,
-        userInterface: UserInterface
+        private http: HttpClient
     ) {
-        this.userInterface = userInterface;
     }
 
     ngOnInit() {
         if (this.isImpersonating()) return;
+        this.loadAllUsers();
+    }
+
+    loadAllUsers(){
+        this.allUsers = []
+        this.http.get<ListUserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers).subscribe(r => {
+            this.allUsers = r;
+        })
     }
 
     impersonate() {

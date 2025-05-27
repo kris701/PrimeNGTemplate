@@ -2,5 +2,8 @@ CREATE PROCEDURE [COR].[SP_GetAllPermissions]
 	@ExecID UNIQUEIDENTIFIER
 AS
 BEGIN
-	SELECT * FROM [COR].[Permissions]
+	IF([COR].[IsStaff](@ExecID) = 1)
+		SELECT * FROM [COR].[Permissions]
+	ELSE
+		SELECT * FROM [COR].[Permissions] WHERE IsStaff = 0
 END

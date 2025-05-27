@@ -6,11 +6,11 @@ namespace PrimeNGTemplate.Plugins.Core.DatabaseInterface.Users
 {
 	public class UsersInterface(IDBClient client) : BaseCRUDModel<AddUserInput, UserModel, EmptyModel, ListUserModel>(
 		client,
-		"COR.SP_AddCompanyUser",
-		"COR.SP_UpdateCompanyUser",
-		"COR.SP_GetCompanyUser",
-		"COR.SP_GetAllCompanyUsers",
-		"COR.SP_DeleteCompanyUser")
+		"COR.SP_AddUser",
+		"COR.SP_UpdateUser",
+		"COR.SP_GetUser",
+		"COR.SP_GetAllUsers",
+		"COR.SP_DeleteUser")
 	{
 	}
 }

@@ -25,7 +25,6 @@ import { ToggleSwitchLabel } from '../../../../../common/toggleswitchlabel';
 import { PermissionModel } from '../../../../../models/Core/permissionModel';
 import { UserModel } from '../../../../../models/Core/userModel';
 import { JWTTokenHelpers } from '../../../helpers/jwtTokenHelpers';
-import { UserInterface } from '../../../interfaces/usersinterface';
 import { PermissionsEditor } from './permissionsEditor';
 import { ConfirmDialogHelpers } from '../../../helpers/confirmdialoghelpers';
 import { AddUserInput } from '../../../../../models/Core/addUserInput';
@@ -88,6 +87,7 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
             </ng-template>
             <div class="card flex flex-col gap-2">
                 <app-toggleswitchlabel [(value)]="currentUser.isActive" label="Is Active?" [disabled]="!canWrite" [hidden]="!canWrite" class="w-full " />
+                <app-toggleswitchlabel [(value)]="currentUser.isStaff" label="Is Staff?" [disabled]="!canWrite" [hidden]="!canWrite" class="w-full " />
 
                 <p-fieldset legend="Login Information">
                     <div class="flex flex-col gap-2">
@@ -106,7 +106,6 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
                         <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWrite" label="First Name" icon="pi-pencil" />
                         <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWrite" label="Last Name" icon="pi-pencil" />
                         <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWrite" label="E-Mail" icon="pi-envelope" />
-                        <app-floattextinput [(value)]="currentUser.phoneNumber" [disabled]="!canWrite" label="Phone Number" icon="pi-phone" />
                     </div>
                 </p-fieldset>
 
@@ -143,7 +142,6 @@ export class UserEditor {
         private http: HttpClient,
         private service: MessageService,
         private confirmationService: ConfirmationService,
-        private userInterface: UserInterface
     ) {}
 
     loadAll() {
@@ -164,8 +162,8 @@ export class UserEditor {
             firstName: 'New',
             lastName: 'User',
             email: 'None',
-            phoneNumber: 'None',
-            isActive: true
+            isActive: true,
+            isStaff: false
         } as UserModel;
         this.showDialog = true;
     }
@@ -186,7 +184,6 @@ export class UserEditor {
                     this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User deleted!' });
                     this.showDialog = false;
                     this.loadUsers();
-                    this.userInterface.RefreshUsers();
                 });
             }
         });
@@ -201,7 +198,7 @@ export class UserEditor {
 
     loadPermissions() {
         this.permissionsList = [];
-        this.http.get<PermissionModel[]>(APIURL + Endpoints.Core.Authentication.Get_AllPermissions).subscribe((l) => {
+        this.http.get<PermissionModel[]>(APIURL + Endpoints.Core.Permissions.Get_AllPermissions).subscribe((l) => {
             this.permissionsList = l;
         });
     }
@@ -226,14 +223,12 @@ export class UserEditor {
                 this.showDialog = false;
                 this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User created!' });
                 this.loadUsers();
-                this.userInterface.RefreshUsers();
             });
         } else {
             this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
                 this.showDialog = false;
                 this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User updated!' });
                 this.loadUsers();
-                this.userInterface.RefreshUsers();
             });
         }
     }
