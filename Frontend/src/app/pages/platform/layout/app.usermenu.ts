@@ -22,6 +22,7 @@ import { UserModel } from '../../../models/Core/userModel';
 import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
 import { PermissionHelpers } from '../helpers/permissionHelpers';
 import { FieldsetModule } from 'primeng/fieldset';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-usermenu',
@@ -103,10 +104,8 @@ export class UserMenu {
         private service: MessageService
     ) {}
 
-    ngOnInit() {
-        this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + JWTTokenHelpers.GetUserID()).subscribe((r) => {
-            this.currentUser = r;
-        });
+    async ngOnInit() {
+        this.currentUser = await firstValueFrom(this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + JWTTokenHelpers.GetUserID()))
     }
 
     logOut() {
@@ -119,7 +118,7 @@ export class UserMenu {
         this.changePasswordVisible = true;
     }
 
-    changePassword() {
+    async changePassword() {
         if (this.newPassword1 != this.newPassword2) {
             alert('New passwords are not identical!');
             return;
@@ -129,20 +128,18 @@ export class UserMenu {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword1
         } as UpdatePasswordInput;
-        this.http.patch<UpdatePasswordInput>(APIURL + Endpoints.Core.Users.Patch_UpdatePassword, input).subscribe(() => {
-            this.router.navigate(['/platform/auth']);
-            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Password updated!' });
-        });
+        await firstValueFrom(this.http.patch(APIURL + Endpoints.Core.Users.Patch_UpdatePassword, input))
+        this.router.navigate(['/platform/auth']);
+        this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Password updated!' });
     }
 
     showEditProfile() {
         this.editProfileVisible = true;
     }
 
-    updateUser() {
-        this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
-            this.editProfileVisible = false;
-            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Profile updated!' });
-        });
+    async updateUser() {
+        this.currentUser = await firstValueFrom(this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser))
+        this.editProfileVisible = false;
+        this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Profile updated!' });
     }
 }

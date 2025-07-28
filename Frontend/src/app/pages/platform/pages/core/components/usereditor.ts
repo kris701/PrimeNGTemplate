@@ -31,6 +31,7 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
 import { TableEmptyMessage } from '../../../../../common/tables/emptymessage';
 import { TableTextFilterColumn, TableBoolFilterColumn } from '../../../../../common/tables/filtercolumns';
 import { TableBoolRow } from '../../../../../common/tables/filterrows';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-core-components-usereditor',
@@ -170,13 +171,13 @@ export class UserEditor {
         private confirmationService: ConfirmationService,
     ) {}
 
-    ngOnInit(){
-        this.loadAll();
+    async ngOnInit(){
+        await this.loadAll();
     }
 
-    loadAll() {
-        if (this.canReadPermissions) this.loadPermissions();
-        if (this.canRead) this.loadItems();
+    async loadAll() {
+        if (this.canReadPermissions) await this.loadPermissions();
+        if (this.canRead) await this.loadItems();
     }
 
     cannotDelete(userID: string): boolean {
@@ -198,45 +199,37 @@ export class UserEditor {
         this.showDialog = true;
     }
 
-    showEditItem(userID: string) {
-        this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + userID).subscribe((u) => {
-            this.currentUser = u;
-            this.showDialog = true;
-        });
+    async showEditItem(userID: string) {
+        this.currentUser = await firstValueFrom(this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + userID))
+        this.showDialog = true;
     }
 
-    deleteItem(userID: string) {
-        this.confirmationService.confirm({
+    async deleteItem(userID: string) {
+        await this.confirmationService.confirm({
             ...ConfirmDialogHelpers.DeleteContent(),
             message: 'Are you sure you want to delete this user?',
-            accept: () => {
-                this.http.delete(APIURL + Endpoints.Core.Users.Delete_User + '?ID=' + userID).subscribe(() => {
-                    this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User deleted!' });
-                    this.showDialog = false;
-                    this.loadItems();
-                });
+            accept: async () => {
+                await firstValueFrom(this.http.delete(APIURL + Endpoints.Core.Users.Delete_User + '?ID=' + userID))
+                this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User deleted!' });
+                this.showDialog = false;
+                await this.loadItems();
             }
         });
     }
 
-    loadItems() {
+    async loadItems() {
         this.isLoading = true;
-        this.http.get<UserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers).subscribe((l) => {
-            this.allItems = l;
-            this.isLoading = false;
-        });
+        this.allItems = await firstValueFrom(this.http.get<UserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers))
+        this.isLoading = false;
     }
 
-    loadPermissions() {
+    async loadPermissions() {
         this.isLoading = true;
-        this.permissionsList = [];
-        this.http.get<PermissionModel[]>(APIURL + Endpoints.Core.Permissions.Get_AllPermissions).subscribe((l) => {
-            this.permissionsList = l;
-            this.isLoading = false;
-        });
+        this.permissionsList = await firstValueFrom(this.http.get<PermissionModel[]>(APIURL + Endpoints.Core.Permissions.Get_AllPermissions));
+        this.isLoading = false;
     }
 
-    saveItem() {
+    async saveItem() {
         if (this.currentUser.id == '') {
             if (this.newPassword1 != this.newPassword2) {
                 alert('New passwords are not identical!');
@@ -252,17 +245,15 @@ export class UserEditor {
                 password: this.newPassword1
             } as AddUserInput;
 
-            this.http.post<UserModel>(APIURL + Endpoints.Core.Users.Post_AddUser, inputModel).subscribe(() => {
-                this.showDialog = false;
-                this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User created!' });
-                this.loadItems();
-            });
+            await firstValueFrom(this.http.post<UserModel>(APIURL + Endpoints.Core.Users.Post_AddUser, inputModel))
+            this.showDialog = false;
+            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User created!' });
+            await this.loadItems();
         } else {
-            this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
-                this.showDialog = false;
-                this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User updated!' });
-                this.loadItems();
-            });
+            await firstValueFrom(this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser))
+            this.showDialog = false;
+            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User updated!' });
+            await this.loadItems();
         }
     }
 }
