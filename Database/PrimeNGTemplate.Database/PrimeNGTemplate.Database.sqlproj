@@ -91,4 +91,7 @@
     <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_GetAllPermissions.sql" />
     <Build Include="Core\Programmability\Functions\IsStaff.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="PrimeNGTemplate.Database-Test.publish.xml" />
+  </ItemGroup>
 </Project>

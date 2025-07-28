@@ -14,6 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
             <p-iconfield>
                 <p-inputicon styleClass="pi {{ icon }}" *ngIf="icon != ''" style="z-index:1" />
                 <p-datepicker
+                    panelStyleClass="raiseround"
                     [(ngModel)]="value"
                     [ngClass]="{ 'ng-invalid ng-dirty': !isValid, inputOffsetter: icon != '' }"
                     [showIcon]="false"

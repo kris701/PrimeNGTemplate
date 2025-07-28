@@ -1,0 +1,9 @@
+.masterclaswrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.masterclaswrapper > * {
+    max-width: 300px !important;
+}

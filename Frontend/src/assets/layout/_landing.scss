@@ -1,0 +1,32 @@
+.layout-main-landing-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 6rem 0 0 0;
+    transition: margin-left var(--layout-section-transition-duration);
+}
+
+.layout-main-landing {
+    flex: 1 1 auto;
+    padding: 2rem;
+}
+
+.landingbackground {
+    background: radial-gradient(circle, var(--surface-card), hsl(from var(--primary-color) h s calc(l - 15)) 1%, var(--surface-card));
+    background-size: 400% 400%;
+    animation: gradient 30s ease infinite;
+    height: 100%;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 10%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 10%;
+    }
+}

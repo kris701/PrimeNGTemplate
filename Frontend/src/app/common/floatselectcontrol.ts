@@ -32,6 +32,10 @@ import { ChipModule } from 'primeng/chip';
                     (onChange)="selectionChanged()"
                     fluid
                     appendTo="body"
+                    (onBlur)="onBlur()"
+                    class="raiseround"
+                    panelStyleClass="raiseround"
+                    [editable]="editable"
                 >
                     <ng-template let-item pTemplate="selectedItem">
                         <div class="item" [ngClass]="icon != '' ? 'pl-7' : ''">
@@ -51,6 +55,7 @@ export class FloatSelectControl implements OnChanges {
     @Input() showClear: boolean = false;
     @Input() options: any[] = [];
     @Input() disabled: boolean = false;
+    @Input() editable: boolean = false;
 
     @Input() icon: string = '';
     @Input() label: string = '';
@@ -63,6 +68,8 @@ export class FloatSelectControl implements OnChanges {
 
     @Input() selected: any | null | undefined = undefined;
     @Output() selectedChange = new EventEmitter<any | null | undefined>();
+
+    @Output() blur = new EventEmitter<null>();
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['selected'] && changes['selected'].currentValue != changes['selected'].previousValue) {
@@ -89,5 +96,9 @@ export class FloatSelectControl implements OnChanges {
 
     selectionChanged() {
         this.selectedChange.emit(this.selected);
+    }
+
+    onBlur() {
+        this.blur.emit();
     }
 }

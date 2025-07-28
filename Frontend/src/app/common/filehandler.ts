@@ -8,6 +8,7 @@ import saveAs from 'file-saver';
 import { DrawerModule } from 'primeng/drawer';
 import { TagModule } from 'primeng/tag';
 import { TableModule } from 'primeng/table';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-filehandler',
@@ -20,7 +21,7 @@ import { TableModule } from 'primeng/table';
                 <p-table [value]="files" [loading]="isLoading">
                     <ng-template #caption>
                         <div class="flex items-center justify-between">
-                            <p-button icon="pi pi-plus" label="Upload" rounded raised (click)="fileUpload.click()" [hidden]="!canWrite" />
+                            <p-button icon="pi pi-plus" label="Add" rounded raised (click)="fileUpload.click()" [hidden]="!canWrite" />
                             <p-button icon="pi pi-refresh" rounded raised (click)="loadFiles()" [hidden]="getAllEndpoint == ''" />
                         </div>
                     </ng-template>
@@ -40,7 +41,7 @@ import { TableModule } from 'primeng/table';
                                 <td>{{ formatSize(attachment.size) }}</td>
                                 <td>
                                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                                        <p-button severity="danger" label="Delete" (click)="removeFile(attachment)" [hidden]="!canWrite" />
+                                        <p-button severity="danger" label="Delete" rounded raised (click)="removeFile(attachment)" [hidden]="!canWrite" />
                                     </div>
                                 </td>
                             } @else {
@@ -49,8 +50,8 @@ import { TableModule } from 'primeng/table';
                                 <td>{{ formatSize(attachment.size) }}</td>
                                 <td>
                                     <div class="flex flex-row-reverse md:flex-row gap-2">
-                                        <p-button color="primary" label="Download" (click)="downloadFile(attachment.id, attachment.name)" [hidden]="!canRead" />
-                                        <p-button severity="danger" label="Delete" (click)="removeFile(attachment)" [hidden]="!canWrite" />
+                                        <p-button color="primary" label="Download" rounded raised (click)="downloadFile(attachment.id, attachment.name)" [hidden]="!canRead" />
+                                        <p-button severity="danger" label="Delete" rounded raised (click)="removeFile(attachment)" [hidden]="!canWrite" />
                                     </div>
                                 </td>
                             }
@@ -85,19 +86,18 @@ export class FileHandlerComponent implements OnChanges {
         this.isVisible = !this.isVisible;
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (this.getAllEndpoint != undefined && this.getAllEndpoint != '') this.loadFiles();
+    async ngOnChanges(changes: SimpleChanges) {
+        if (this.getAllEndpoint != undefined && this.getAllEndpoint != '') await this.loadFiles();
     }
 
-    loadFiles() {
+    async loadFiles() {
         if (this.getAllEndpoint == '') return;
         this.clear();
         this.isLoading = true;
-        this.http.get<File[]>(this.getAllEndpoint).subscribe((r) => {
-            this.initialFiles = [...r];
-            this.files = [...r];
-            this.isLoading = false;
-        });
+        var r = await firstValueFrom(this.http.get<File[]>(this.getAllEndpoint));
+        this.initialFiles = [...r];
+        this.files = [...r];
+        this.isLoading = false;
     }
 
     public clear() {
@@ -105,26 +105,30 @@ export class FileHandlerComponent implements OnChanges {
         this.initialFiles = [];
     }
 
-    public submit() {
+    public async submit() {
         var toRemove = this.initialFiles.filter((x) => !this.files.includes(x));
         var toAdd = this.files.filter((x) => !this.initialFiles.includes(x));
 
         if (toRemove.length > 0 && this.deleteEndpoint == '') this.service.add({ severity: 'warn', summary: 'Warning Message', detail: 'No endpoint was set for deleting a file!!' });
         else
-            toRemove.forEach((x) => {
-                if ((<any>x).id) this.http.delete(this.deleteEndpoint + '?ID=' + (<any>x).id).subscribe();
-            });
+            await Promise.all(
+                toRemove.map((x) => {
+                    return firstValueFrom(this.http.delete(this.deleteEndpoint + '?ID=' + (<any>x).id));
+                })
+            );
         if (toAdd.length > 0 && this.postEndpoint == '') this.service.add({ severity: 'warn', summary: 'Warning Message', detail: 'No endpoint was set for uploading a file!!' });
         else
-            toAdd.forEach((x) => {
-                const formData = new FormData();
-                formData.append('file', x);
-                this.http.post(this.postEndpoint, formData).subscribe();
-            });
+            await Promise.all(
+                toAdd.map((x) => {
+                    const formData = new FormData();
+                    formData.append('file', x);
+                    return firstValueFrom(this.http.post(this.postEndpoint, formData));
+                })
+            );
 
         if (this.clearOnSubmit) this.clear();
 
-        this.loadFiles();
+        await this.loadFiles();
     }
 
     onFileSelected(event: any) {
@@ -140,8 +144,9 @@ export class FileHandlerComponent implements OnChanges {
         if (file) this.files = this.files.filter((x) => x != file);
     }
 
-    downloadFile(id: string, name: string) {
-        this.http.get(this.getEndpoint + '?ID=' + id, { responseType: 'blob' }).subscribe((response: Blob) => saveAs(response, name));
+    async downloadFile(id: string, name: string) {
+        var response = await firstValueFrom(this.http.get(this.getEndpoint + '?ID=' + id, { responseType: 'blob' }));
+        saveAs(response, name);
     }
 
     formatSize(bytes: number) {

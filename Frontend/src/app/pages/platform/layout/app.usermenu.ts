@@ -47,8 +47,8 @@ import { FieldsetModule } from 'primeng/fieldset';
             <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="showEditProfile()" [style]="{ width: '100%' }" />
             <p-button icon="pi pi-sign-out" label="Log Out" severity="danger" pTooltip="Log out and return to the login screen" (click)="logOut()" [disabled]="isImpersonating" [style]="{ width: '100%' }" />
 
-            <p-dialog header="Change Password" [(visible)]="changePasswordVisible" [style]="{ width: '30vw' }" [modal]="true">
-                <div class="card flex flex-col gap-2">
+            <p-dialog header="Change Password" [(visible)]="changePasswordVisible" [style]="{ width: '30vw' }" [modal]="true" [draggable]="false">
+                <div class="flex flex-col gap-2">
                     <p-password id="password1" [(ngModel)]="oldPassword" placeholder="Old Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="false"></p-password>
                     <p-password id="password2" [(ngModel)]="newPassword1" placeholder="New Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="true"></p-password>
                     <p-password id="password3" [(ngModel)]="newPassword2" placeholder="Repeat new Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="true"></p-password>
@@ -58,8 +58,8 @@ import { FieldsetModule } from 'primeng/fieldset';
                 </ng-template>
             </p-dialog>
 
-            <p-dialog header="Profile" [(visible)]="editProfileVisible" [breakpoints]="{ '960px': '95vw' }" [style]="{ width: '50vw' }" [modal]="true">
-                <div class="card flex flex-col gap-2">
+            <p-dialog header="Profile" [(visible)]="editProfileVisible" [breakpoints]="{ '960px': '95vw' }" [style]="{ width: '50vw' }" [modal]="true" [draggable]="false">
+                <div class="flex flex-col gap-2">
                     <p>Here you can view and modify your current profile information</p>
                     <p-fieldset legend="Login Information">
                         <div class="flex flex-col gap-2">

@@ -1,0 +1,257 @@
+:root {
+    --general-rounding-size: 2rem;
+    --panel-rounding-size: 1.5rem;
+}
+
+// Rounded controls
+.raiseround {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+.raise {
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+.round {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+// Override for the datepicker input to be rounded
+.p-datepicker > input {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-editor-toolbar {
+    border-radius: var(--panel-rounding-size) var(--panel-rounding-size) 0px 0px !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-editor-content {
+    border-radius: 0px 0px var(--panel-rounding-size) var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.ql-editor {
+    border-radius: 0px 0px var(--panel-rounding-size) var(--panel-rounding-size) !important;
+}
+
+.p-inputnumber > input {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-password > input {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-select-option {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-multiselect-option {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-paginator-rpp-dropdown {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-select-overlay {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-multiselect-overlay {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-select-filter {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-multiselect-filter {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datatable-filter-overlay {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datatable-filter-overlay * p-select {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datatable-filter-overlay * p-multiselect {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datatable-filter-overlay * input {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datatable-filter-overlay * button {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datatable {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datatable-table-container {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+    scrollbar-gutter: auto both-edges;
+    margin-bottom: 3px;
+}
+
+.p-datatable-tbody > tr > td {
+    border-width: 0 0 1px 0 !important;
+}
+
+.p-datatable-tbody > tr > :first-child {
+    border-width: 0 0 1px 1px !important;
+}
+
+.p-datatable-tbody > tr > :last-child {
+    border-width: 0 1px 1px 0 !important;
+}
+
+.p-datatable-tbody > :last-child > :first-child {
+    border-width: 0 0 1px 1px !important;
+}
+
+.p-datatable-tbody > :last-child > :last-child {
+    border-width: 0 1px 1px 0 !important;
+}
+
+.p-treetable {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-treetable-wrapper {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.p-treetable-tbody {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-treetable-tbody > tr > td {
+    border-width: 0 0 1px 0 !important;
+}
+
+.p-treetable-tbody > tr > :first-child {
+    border-width: 0 0 1px 1px !important;
+}
+
+.p-treetable-tbody > tr > :last-child {
+    border-width: 0 1px 1px 0 !important;
+}
+
+.p-treetable-tbody > :last-child > :first-child {
+    border-width: 0 0 1px 1px !important;
+}
+
+.p-treetable-tbody > :last-child > :last-child {
+    border-width: 0 1px 1px 0 !important;
+}
+
+.p-menu-overlay {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-menu-item-content {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-datepicker-panel {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-fieldset {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.card {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-toolbar {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-panel {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-tag {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-badge {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-progressbar {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-dialog {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-button {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-select {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-multiselect {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-chip {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.layout-sidebar {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-panel {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-menubar {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.overflow-guard {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.monaco-editor {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-splitter {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}
+
+.p-message {
+    border-radius: var(--panel-rounding-size) !important;
+    box-shadow: var(--p-button-raised-shadow) !important;
+}

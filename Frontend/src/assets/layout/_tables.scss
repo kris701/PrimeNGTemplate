@@ -1,0 +1,6 @@
+.rowclickable {
+    cursor: pointer;
+}
+.rowclickable:hover {
+    background: var(--p-datatable-row-hover-background) !important;
+}

@@ -28,6 +28,9 @@ import { JWTTokenHelpers } from '../../../helpers/jwtTokenHelpers';
 import { PermissionsEditor } from './permissionsEditor';
 import { ConfirmDialogHelpers } from '../../../helpers/confirmdialoghelpers';
 import { AddUserInput } from '../../../../../models/Core/addUserInput';
+import { TableEmptyMessage } from '../../../../../common/tables/emptymessage';
+import { TableTextFilterColumn, TableBoolFilterColumn } from '../../../../../common/tables/filtercolumns';
+import { TableBoolRow } from '../../../../../common/tables/filterrows';
 
 @Component({
     selector: 'app-core-components-usereditor',
@@ -47,34 +50,55 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
         TagModule,
         FloatTextInput,
         ToggleSwitchLabel,
-        BooleanLabelControl,
+        TableTextFilterColumn,
+        TableEmptyMessage,
+        TableBoolRow,
+        TableBoolFilterColumn,
         CreatedUpdatedControl,
         PermissionsEditor,
         FieldsetModule
     ],
     template: `
-        <p-table [value]="allUsers" [scrollable]="true" styleClass="mt-4" [loading]="isLoading">
+
+        <p-table
+            #dt1
+            [value]="allItems"
+            stateStorage="local"
+            stateKey="core-company-users-session"
+            dataKey="id"
+            sortMode="multiple"
+            [loading]="isLoading"
+            [paginator]="allItems.length > 10"
+            [rows]="10"
+            [rowsPerPageOptions]="[10, 25, 50, 100]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+        >
             <ng-template #caption>
                 <div class="flex items-center justify-between">
-                    <p-button icon="pi pi-plus" label="Add User" rounded raised (click)="showAddUser()" [hidden]="!canWrite" />
-                    <p-button icon="pi pi-refresh" rounded raised (click)="loadUsers()" />
+                    <p-button label="Clear" rounded raised text icon="pi pi-filter-slash" (click)="dt1.clear(); dt1.stateKey ? localStorage.removeItem(dt1.stateKey) : null" />
+                    <p-button icon="pi pi-plus" label="Add User" rounded raised (click)="showAddItem()" [hidden]="!canWrite" />
+                    <p-button icon="pi pi-refresh" rounded raised (click)="loadItems()" />
                 </div>
             </ng-template>
             <ng-template #header>
-                <tr>
-                    <th class="font-bold">Name</th>
-                    <th>Email</th>
-                    <th>Is Active?</th>
-                    <th>Is Staff?</th>
+                <tr *ngIf="allItems.length > 0">
+                    <th textfiltercolumn pSortableColumn="name" displayName="Name"></th>
+                    <th textfiltercolumn pSortableColumn="email" displayName="Email"></th>
+                    <th boolfiltercolumn pSortableColumn="isActive" displayName="Active"></th>
+                    <th boolfiltercolumn pSortableColumn="isStaff" displayName="Staff"></th>
                 </tr>
             </ng-template>
-            <ng-template #body let-user>
-                <tr (click)="showEditUser(user.id)" class="rowclickable">
-                    <td class="font-bold">{{ user.firstName }} {{ user.lastName }}</td>
-                    <td>{{ user.email }}</td>
-                    <td><app-booleanlabel [value]="user.isActive" /></td>
-                    <td><app-booleanlabel [value]="user.isStaff" /></td>
+            <ng-template #body let-item>
+                <tr (click)="showEditItem(item.id)" class="rowclickable">
+                    <td>{{ item.firstName }} {{ item.lastName }}</td>
+                    <td>{{ item.email }}</td>
+                    <td boolrow [value]="item.isActive"></td>
+                    <td boolrow [value]="item.isStaff"></td>
                 </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <td emptymessage>No users have been made yet...</td>
             </ng-template>
         </p-table>
 
@@ -85,7 +109,7 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
                     <app-createdupdated [createdAt]="currentUser.createdAt" [updatedAt]="currentUser.updatedAt" />
                 </div>
             </ng-template>
-            <div class="card flex flex-col gap-2">
+            <div class="flex flex-col gap-2">
                 <app-toggleswitchlabel [(value)]="currentUser.isActive" label="Is Active?" [disabled]="!canWrite" [hidden]="!canWrite" class="w-full " />
                 <app-toggleswitchlabel [(value)]="currentUser.isStaff" label="Is Staff?" [disabled]="!canWrite" [hidden]="!canWrite" class="w-full " />
 
@@ -116,9 +140,9 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
                 </p-fieldset>
             </div>
             <ng-template #footer>
-                <p-button label="Save" icon="pi pi-save" (click)="saveUser()" [hidden]="!canWrite" />
+                <p-button label="Save" icon="pi pi-save" (click)="saveItem()" [hidden]="!canWrite" />
                 <p-confirmdialog />
-                <p-button icon="pi pi-times" label="Delete" severity="danger" [disabled]="cannotDelete(currentUser.id)" (click)="deleteUser(currentUser.id)" [hidden]="!canWrite"></p-button>
+                <p-button icon="pi pi-times" label="Delete" severity="danger" [disabled]="cannotDelete(currentUser.id)" (click)="deleteItem(currentUser.id)" [hidden]="!canWrite"></p-button>
             </ng-template>
         </p-dialog>
     `
@@ -129,13 +153,15 @@ export class UserEditor {
     permissionsList: PermissionModel[] = [];
     isLoading: boolean = true;
 
+    localStorage = localStorage;
+
     @Input() canRead: boolean = false;
     @Input() canWrite: boolean = false;
     @Input() canReadPermissions: boolean = false;
 
     showDialog: boolean = false;
 
-    allUsers: UserModel[] = [];
+    allItems: UserModel[] = [];
     currentUser: UserModel = {} as UserModel;
 
     constructor(
@@ -150,16 +176,16 @@ export class UserEditor {
 
     loadAll() {
         if (this.canReadPermissions) this.loadPermissions();
-        if (this.canRead) this.loadUsers();
+        if (this.canRead) this.loadItems();
     }
 
     cannotDelete(userID: string): boolean {
-        if (this.allUsers.length == 1) return true;
+        if (this.allItems.length == 1) return true;
         if (JWTTokenHelpers.GetUserID() == userID) return true;
         return false;
     }
 
-    showAddUser() {
+    showAddItem() {
         this.currentUser = {
             id: '',
             loginName: 'newusername',
@@ -172,14 +198,14 @@ export class UserEditor {
         this.showDialog = true;
     }
 
-    showEditUser(userID: string) {
+    showEditItem(userID: string) {
         this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + userID).subscribe((u) => {
             this.currentUser = u;
             this.showDialog = true;
         });
     }
 
-    deleteUser(userID: string) {
+    deleteItem(userID: string) {
         this.confirmationService.confirm({
             ...ConfirmDialogHelpers.DeleteContent(),
             message: 'Are you sure you want to delete this user?',
@@ -187,16 +213,16 @@ export class UserEditor {
                 this.http.delete(APIURL + Endpoints.Core.Users.Delete_User + '?ID=' + userID).subscribe(() => {
                     this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User deleted!' });
                     this.showDialog = false;
-                    this.loadUsers();
+                    this.loadItems();
                 });
             }
         });
     }
 
-    loadUsers() {
+    loadItems() {
         this.isLoading = true;
         this.http.get<UserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers).subscribe((l) => {
-            this.allUsers = l;
+            this.allItems = l;
             this.isLoading = false;
         });
     }
@@ -210,7 +236,7 @@ export class UserEditor {
         });
     }
 
-    saveUser() {
+    saveItem() {
         if (this.currentUser.id == '') {
             if (this.newPassword1 != this.newPassword2) {
                 alert('New passwords are not identical!');
@@ -229,13 +255,13 @@ export class UserEditor {
             this.http.post<UserModel>(APIURL + Endpoints.Core.Users.Post_AddUser, inputModel).subscribe(() => {
                 this.showDialog = false;
                 this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User created!' });
-                this.loadUsers();
+                this.loadItems();
             });
         } else {
             this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
                 this.showDialog = false;
                 this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User updated!' });
-                this.loadUsers();
+                this.loadItems();
             });
         }
     }

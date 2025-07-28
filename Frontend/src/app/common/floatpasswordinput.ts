@@ -14,7 +14,21 @@ import { PasswordModule } from 'primeng/password';
         <p-floatlabel variant="on">
             <p-iconfield>
                 <p-inputicon styleClass="pi {{ icon }}" *ngIf="icon != ''" />
-                <p-password [ngClass]="isValid ? '' : 'ng-invalid ng-dirty'" id="floatpasswordlabel" [feedback]="feedback" [toggleMask]="true" type="text" [(ngModel)]="value" [disabled]="disabled" fluid (change)="valueChanged()" />
+                <p-password
+                    class="raiseround"
+                    panelStyleClass="raiseround"
+                    [ngClass]="isValid ? '' : 'ng-invalid ng-dirty'"
+                    id="floatpasswordlabel"
+                    [feedback]="feedback"
+                    [toggleMask]="true"
+                    type="text"
+                    [(ngModel)]="value"
+                    [disabled]="disabled"
+                    fluid
+                    (change)="valueChanged()"
+                    (keyup.enter)="onEnter.emit()"
+                    appendTo="body"
+                />
             </p-iconfield>
             <label for="floatpasswordlabel">{{ label }}</label>
         </p-floatlabel>
@@ -28,6 +42,7 @@ export class FloatPasswordInput implements OnChanges {
     @Input() label: string = '';
     @Input() value: string | null | undefined = undefined;
     @Output() valueChange = new EventEmitter<string | null | undefined>();
+    @Output() onEnter = new EventEmitter<null>();
 
     isValid: boolean = true;
 
