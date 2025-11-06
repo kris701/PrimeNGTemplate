@@ -6,6 +6,7 @@ export const Endpoints = {
 		Authentication: {
 			Name: "Authentication",
 			Post_Authenticate: "endpoints/core/authentication",
+			Post_UpdatePassword: "endpoints/core/authentication/updatepassword",
 			Post_Impersonate: "endpoints/core/authentication/impersonate",
 		},
 		Permissions: {

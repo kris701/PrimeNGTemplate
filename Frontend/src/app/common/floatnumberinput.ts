@@ -6,16 +6,22 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
+import { InputGroup } from 'primeng/inputgroup';
+import { InputGroupAddon } from 'primeng/inputgroupaddon';
 
 @Component({
     selector: 'app-floatnumberinput',
-    imports: [FormsModule, CommonModule, FloatLabelModule, InputTextModule, InputNumberModule, InputIconModule, IconFieldModule],
+    imports: [FormsModule, CommonModule, FloatLabelModule, InputTextModule, InputNumberModule, InputIconModule, IconFieldModule, InputGroup, InputGroupAddon],
     template: `
-        <p-floatlabel variant="on">
-            <p-iconfield>
-                <p-inputicon styleClass="pi {{ icon }}" *ngIf="icon != ''" style="z-index:1" />
+        <p-inputgroup style="height:2.5rem">
+            @if (icon != '') {
+                <p-inputgroup-addon>
+                    <i class="pi {{ icon }}"></i>
+                </p-inputgroup-addon>
+            }
+            <p-floatlabel variant="on">
                 <p-inputnumber
-                    [ngClass]="{ 'ng-invalid ng-dirty': !isValid, inputOffsetter: icon != '' }"
+                    [ngClass]="{ 'ng-invalid ng-dirty': !isValid }"
                     [(ngModel)]="value"
                     [currency]="currency"
                     inputId="floatnumberlabel"
@@ -25,10 +31,12 @@ import { IconFieldModule } from 'primeng/iconfield';
                     [disabled]="disabled"
                     fluid
                     (ngModelChange)="valueChanged()"
+                    style="border-radius: inherit"
+                    [inputStyle]="{ 'border-radius': 'inherit' }"
                 />
-            </p-iconfield>
-            <label for="floatnumberlabel">{{ label }}</label>
-        </p-floatlabel>
+                <label for="floatnumberlabel">{{ label }}</label>
+            </p-floatlabel>
+        </p-inputgroup>
     `
 })
 export class FloatNumberInput implements OnChanges {

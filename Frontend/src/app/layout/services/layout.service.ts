@@ -29,7 +29,7 @@ export class LayoutService {
     _config: layoutConfig = {
         preset: 'Aura',
         primary: 'custom',
-        surface: 'slate',
+        surface: 'ocean',
         darkTheme: true,
         menuMode: 'static'
     };
@@ -82,7 +82,11 @@ export class LayoutService {
         var theme = localStorage.getItem('theme');
         if (theme) {
             this._config = JSON.parse(theme) as layoutConfig;
-            this.layoutConfig = signal<layoutConfig>(this._config);
+            if (this._config) {
+                this.layoutConfig = signal<layoutConfig>(this._config);
+                this.handleDarkModeTransition(this._config);
+                this.onConfigUpdate();
+            }
         }
 
         effect(() => {
@@ -128,9 +132,9 @@ export class LayoutService {
     toggleDarkMode(config?: layoutConfig): void {
         const _config = config || this.layoutConfig();
         if (_config.darkTheme) {
-            document.documentElement.classList.add('app-dark');
+            document.documentElement.classList.add('dark');
         } else {
-            document.documentElement.classList.remove('app-dark');
+            document.documentElement.classList.remove('dark');
         }
     }
 
@@ -139,6 +143,11 @@ export class LayoutService {
         setTimeout(() => {
             this.transitionComplete.set(false);
         });
+    }
+
+    setMenuState(wide: boolean) {
+        if (wide && this.isOverlay()) this.onMenuToggle();
+        else if (!wide && this.isDesktop()) this.onMenuToggle();
     }
 
     onMenuToggle() {
@@ -154,7 +163,6 @@ export class LayoutService {
             this.layoutState.update((prev) => ({ ...prev, staticMenuDesktopInactive: !this.layoutState().staticMenuDesktopInactive }));
         } else {
             this.layoutState.update((prev) => ({ ...prev, staticMenuMobileActive: !this.layoutState().staticMenuMobileActive }));
-
             if (this.layoutState().staticMenuMobileActive) {
                 this.overlayOpen.next(null);
             }
@@ -181,5 +189,10 @@ export class LayoutService {
 
     reset() {
         this.resetSource.next(true);
+    }
+
+    resetToDefault() {
+        localStorage.removeItem('theme');
+        window.location.reload();
     }
 }

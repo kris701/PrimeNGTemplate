@@ -1,3 +1,4 @@
+import { FloatToggleSwitch } from './../../../../../common/floattoggleswitch';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
@@ -17,11 +18,9 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { Endpoints } from '../../../../../../Endpoints';
 import { APIURL } from '../../../../../../globals';
-import { BooleanLabelControl } from '../../../../../common/booleanlabelcontrol';
 import { FieldsetModule } from 'primeng/fieldset';
 import { CreatedUpdatedControl } from '../../../../../common/createdupdatedcontrol';
 import { FloatTextInput } from '../../../../../common/floattextinput';
-import { ToggleSwitchLabel } from '../../../../../common/toggleswitchlabel';
 import { PermissionModel } from '../../../../../models/Core/permissionModel';
 import { UserModel } from '../../../../../models/Core/userModel';
 import { JWTTokenHelpers } from '../../../helpers/jwtTokenHelpers';
@@ -32,33 +31,35 @@ import { TableEmptyMessage } from '../../../../../common/tables/emptymessage';
 import { TableTextFilterColumn, TableBoolFilterColumn } from '../../../../../common/tables/filtercolumns';
 import { TableBoolRow } from '../../../../../common/tables/filterrows';
 import { firstValueFrom } from 'rxjs';
+import { FloatPasswordInput } from "../../../../../common/floatpasswordinput";
 
 @Component({
     selector: 'app-core-components-usereditor',
     imports: [
-        FormsModule,
-        CommonModule,
-        DialogModule,
-        ButtonModule,
-        FloatLabelModule,
-        InputTextModule,
-        MultiSelectModule,
-        PasswordModule,
-        TableModule,
-        ChipModule,
-        TooltipModule,
-        ConfirmDialogModule,
-        TagModule,
-        FloatTextInput,
-        ToggleSwitchLabel,
-        TableTextFilterColumn,
-        TableEmptyMessage,
-        TableBoolRow,
-        TableBoolFilterColumn,
-        CreatedUpdatedControl,
-        PermissionsEditor,
-        FieldsetModule
-    ],
+    FormsModule,
+    CommonModule,
+    DialogModule,
+    ButtonModule,
+    FloatLabelModule,
+    InputTextModule,
+    MultiSelectModule,
+    PasswordModule,
+    TableModule,
+    ChipModule,
+    TooltipModule,
+    ConfirmDialogModule,
+    TagModule,
+    FloatTextInput,
+    TableTextFilterColumn,
+    TableEmptyMessage,
+    TableBoolRow,
+    TableBoolFilterColumn,
+    CreatedUpdatedControl,
+    PermissionsEditor,
+    FieldsetModule,
+    FloatToggleSwitch,
+    FloatPasswordInput
+],
     template: `
 
         <p-table
@@ -120,8 +121,8 @@ import { firstValueFrom } from 'rxjs';
                         <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canWrite" label="Login Name" icon="pi-sign-in" />
                         @if (currentUser.id == '') {
                             <div class="gap-2">
-                                <p-password id="password1" [(ngModel)]="newPassword1" placeholder="Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="true"></p-password>
-                                <p-password id="password2" [(ngModel)]="newPassword2" placeholder="Repeat Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="true"></p-password>
+                                <app-floatpasswordinput [(value)]="newPassword1" [feedback]="true" label="Password" />
+                                <app-floatpasswordinput [(value)]="newPassword2" [feedback]="true" label="Repeat Password" />
                             </div>
                         }
                     </div>

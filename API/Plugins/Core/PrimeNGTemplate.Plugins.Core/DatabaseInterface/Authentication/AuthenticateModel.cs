@@ -1,4 +1,5 @@
 ﻿using DatabaseSharp;
+using PrimeNGTemplate.API.Tools;
 using PrimeNGTemplate.API.Tools.Serialization;
 using PrimeNGTemplate.Plugins.Core.Helpers;
 using PrimeNGTemplate.Plugins.Core.Models.Internal.Authentication;
@@ -14,13 +15,16 @@ namespace PrimeNGTemplate.Plugins.Core.DatabaseInterface.Authentication
 
 		public override async Task<AuthenticationOutput> ExecuteAsync(AuthenticateInput input)
 		{
-			input.Password = HashingHelpers.CreateMD5(input.Password);
-
-			var result = await _client.ExecuteAsync("COR.SP_Authenticate", input);
+			var result = await _client.ExecuteAsync("COR.SP_AuthenticateByUsername", input);
 			if (result[0].Count == 0)
-				throw new Exception("Username or password is invalid!");
+				throw new Exception("Username is invalid!");
+			var userID = new Guid(result[0][0].GetValue<string>("PK_ID"));
+			var passwordHash = result[0][0].GetValue<string>("LoginPassword");
+			if (!HashingHelpers.VerifyHash(passwordHash, input.Password))
+				throw new Exception("Password is invalid!");
 
-			var user = result[0][0].Fill<UserModel>(result);
+			result = await _client.ExecuteAsync("COR.SP_GetUser", new GetModel(userID, Guid.Empty));
+			var user = result[0][0].Fill<UserModel>();
 
 			return new AuthenticationOutput(user, JWTTokenHelpers.CreateToken(user, _settings.Secret, _settings.LifetimeMin));
 		}

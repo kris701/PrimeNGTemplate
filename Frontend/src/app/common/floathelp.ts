@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 
 @Component({
-    selector: 'app-cardhelp',
+    selector: 'app-floathelp',
     imports: [CommonModule, ButtonModule, DrawerModule],
     template: `
         <div class="flex" style="flex-direction:row-reverse;position:relative;top:-1.5rem;right:-1.5rem;margin-bottom:-2.5rem;z-index:10">
@@ -15,7 +15,7 @@ import { DrawerModule } from 'primeng/drawer';
         </div>
     `
 })
-export class CardHelpDrawer {
+export class FloatHelp {
     visible: boolean = false;
 
     @Input() header = 'Help';

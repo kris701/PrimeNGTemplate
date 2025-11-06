@@ -1,4 +1,4 @@
-﻿using DatabaseSharp.Models;
+﻿using DatabaseSharp.Attributes;
 using System.Text.Json.Serialization;
 
 namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication

@@ -6,18 +6,23 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
     selector: 'app-floattextinput',
-    imports: [FormsModule, CommonModule, FloatLabelModule, InputTextModule, InputIconModule, IconFieldModule, AutoFocusModule],
+    imports: [FormsModule, CommonModule, FloatLabelModule, InputTextModule, InputIconModule, IconFieldModule, AutoFocusModule, InputGroupModule, InputGroupAddonModule],
     template: `
-        <p-floatlabel variant="on">
-            <p-iconfield>
-                <p-inputicon styleClass="pi {{ icon }}" *ngIf="icon != ''" />
+        <p-inputgroup style="height:2.5rem">
+            @if (icon != '') {
+                <p-inputgroup-addon>
+                    <i class="pi {{ icon }}"></i>
+                </p-inputgroup-addon>
+            }
+            <p-floatlabel variant="on">
                 @if (size == 'normal') {
                     <input
                         pInputText
-                        class="raiseround"
                         [ngClass]="isValid ? '' : 'ng-invalid ng-dirty'"
                         id="floattextlabel"
                         type="text"
@@ -29,12 +34,12 @@ import { AutoFocusModule } from 'primeng/autofocus';
                         (keyup.enter)="onEnter.emit()"
                         autofocus
                         [pAutoFocus]="autoFocus"
+                        style="border-radius: inherit"
                     />
-                } @else if (size == 'small') {
+                } @else if (size == 'small' || size == 'large') {
                     <input
                         pInputText
-                        pSize="small"
-                        class="raiseround"
+                        [pSize]="size"
                         [ngClass]="isValid ? '' : 'ng-invalid ng-dirty'"
                         id="floattextlabel"
                         type="text"
@@ -46,28 +51,12 @@ import { AutoFocusModule } from 'primeng/autofocus';
                         (keyup.enter)="onEnter.emit()"
                         autofocus
                         [pAutoFocus]="autoFocus"
-                    />
-                } @else if (size == 'large') {
-                    <input
-                        pInputText
-                        pSize="large"
-                        class="raiseround"
-                        [ngClass]="isValid ? '' : 'ng-invalid ng-dirty'"
-                        id="floattextlabel"
-                        type="text"
-                        [(ngModel)]="value"
-                        [disabled]="disabled"
-                        fluid
-                        (change)="valueChanged()"
-                        (blur)="onBlur()"
-                        (keyup.enter)="onEnter.emit()"
-                        autofocus
-                        [pAutoFocus]="autoFocus"
+                        style="border-radius: inherit"
                     />
                 }
-            </p-iconfield>
-            <label for="floattextlabel">{{ label }}</label>
-        </p-floatlabel>
+                <label for="floattextlabel">{{ label }}</label>
+            </p-floatlabel>
+        </p-inputgroup>
     `
 })
 export class FloatTextInput implements OnChanges {
@@ -80,10 +69,7 @@ export class FloatTextInput implements OnChanges {
     @Input() value: string | null | undefined = undefined;
     @Output() valueChange = new EventEmitter<string | null | undefined>();
     @Output() blur = new EventEmitter<null>();
-
     @Output() onEnter = new EventEmitter<null>();
-
-    @Input() allowEmpty: boolean = false;
 
     isValid: boolean = true;
 
@@ -98,7 +84,7 @@ export class FloatTextInput implements OnChanges {
 
     valueChanged() {
         if (this.value) this.value = this.value.trim();
-        if (!this.allowEmpty) this.isValid = this.value != undefined && this.value != null && this.value != '';
+        this.isValid = this.value != undefined && this.value != null && this.value != '';
         this.valueChange.emit(this.value);
     }
 

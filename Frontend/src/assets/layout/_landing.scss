@@ -1,32 +1,49 @@
 .layout-main-landing-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%;
     justify-content: space-between;
-    padding: 6rem 0 0 0;
     transition: margin-left var(--layout-section-transition-duration);
 }
 
 .layout-main-landing {
     flex: 1 1 auto;
-    padding: 2rem;
+    padding: 0;
 }
 
-.landingbackground {
-    background: radial-gradient(circle, var(--surface-card), hsl(from var(--primary-color) h s calc(l - 15)) 1%, var(--surface-card));
-    background-size: 400% 400%;
-    animation: gradient 30s ease infinite;
-    height: 100%;
+.layout-main-snapscroll {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 99vh;
+    width: 100%;
 }
 
-@keyframes gradient {
-    0% {
-        background-position: 0% 10%;
-    }
-    50% {
-        background-position: 100% 0%;
-    }
-    100% {
-        background-position: 0% 10%;
-    }
+.layout-main-snapscroll > div {
+    text-align: center;
+    scroll-snap-align: center;
+    flex: none;
+}
+
+.layout-main-landing-navigator {
+    right: 1rem;
+    padding-left: 5px;
+    padding-right: 5px;
+    align-self: anchor-center;
+    text-align: end;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+}
+
+.layout-main-landing-video-background {
+    left: 0px;
+    top: 0px;
+    scale: 1;
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
 }

@@ -3,6 +3,47 @@
     --panel-rounding-size: 1.5rem;
 }
 
+.roundLeft {
+    border-radius: var(--panel-rounding-size) 0 0 var(--panel-rounding-size);
+}
+@media (min-width: 768px) {
+    .md\:roundLeft {
+        border-radius: var(--panel-rounding-size) 0 0 var(--panel-rounding-size) !important;
+    }
+}
+
+.roundRight {
+    border-radius: 0 var(--panel-rounding-size) var(--panel-rounding-size) 0;
+}
+@media (min-width: 768px) {
+    .md\:roundRight {
+        border-radius: 0 var(--panel-rounding-size) var(--panel-rounding-size) 0 !important;
+    }
+}
+
+.roundTop {
+    border-radius: var(--panel-rounding-size) var(--panel-rounding-size) 0 0;
+}
+@media (min-width: 768px) {
+    .md\:roundTop {
+        border-radius: var(--panel-rounding-size) var(--panel-rounding-size) 0 0 !important;
+    }
+}
+
+.roundBottom {
+    border-radius: 0 0 var(--panel-rounding-size) var(--panel-rounding-size);
+}
+@media (min-width: 768px) {
+    .md\:roundBottom {
+        border-radius: 0 0 var(--panel-rounding-size) var(--panel-rounding-size) !important;
+    }
+}
+@media (max-width: 768px) {
+    .roundBottomImp {
+        border-radius: 0 0 var(--panel-rounding-size) var(--panel-rounding-size) !important;
+    }
+}
+
 // Rounded controls
 .raiseround {
     border-radius: var(--panel-rounding-size) !important;
@@ -16,10 +57,6 @@
 }
 
 // Override for the datepicker input to be rounded
-.p-datepicker > input {
-    border-radius: var(--panel-rounding-size) !important;
-    box-shadow: var(--p-button-raised-shadow) !important;
-}
 
 .p-editor-toolbar {
     border-radius: var(--panel-rounding-size) var(--panel-rounding-size) 0px 0px !important;
@@ -33,16 +70,6 @@
 
 .ql-editor {
     border-radius: 0px 0px var(--panel-rounding-size) var(--panel-rounding-size) !important;
-}
-
-.p-inputnumber > input {
-    border-radius: var(--panel-rounding-size) !important;
-    box-shadow: var(--p-button-raised-shadow) !important;
-}
-
-.p-password > input {
-    border-radius: var(--panel-rounding-size) !important;
-    box-shadow: var(--p-button-raised-shadow) !important;
 }
 
 .p-select-option {
@@ -165,10 +192,6 @@
     box-shadow: var(--p-button-raised-shadow) !important;
 }
 
-.p-menu-item-content {
-    border-radius: var(--panel-rounding-size) !important;
-}
-
 .p-datepicker-panel {
     border-radius: var(--panel-rounding-size) !important;
     box-shadow: var(--p-button-raised-shadow) !important;
@@ -176,7 +199,6 @@
 
 .p-fieldset {
     border-radius: var(--panel-rounding-size) !important;
-    box-shadow: var(--p-button-raised-shadow) !important;
 }
 
 .card {
@@ -211,14 +233,6 @@
     border-radius: var(--panel-rounding-size) !important;
 }
 
-.p-select {
-    border-radius: var(--panel-rounding-size) !important;
-}
-
-.p-multiselect {
-    border-radius: var(--panel-rounding-size) !important;
-}
-
 .p-chip {
     border-radius: var(--panel-rounding-size) !important;
 }
@@ -237,21 +251,34 @@
     box-shadow: var(--p-button-raised-shadow) !important;
 }
 
-.overflow-guard {
+.p-menubar-submenu {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-menubar-item-content {
+    border-radius: var(--panel-rounding-size) !important;
+}
+
+.p-popover {
+    border-radius: 0.9rem !important;
+}
+
+.p-inputgroup {
     border-radius: var(--panel-rounding-size) !important;
     box-shadow: var(--p-button-raised-shadow) !important;
 }
 
-.monaco-editor {
-    border-radius: var(--panel-rounding-size) !important;
+.p-inputgroup > :first-child {
+    border-top-left-radius: var(--panel-rounding-size) !important;
+    border-bottom-left-radius: var(--panel-rounding-size) !important;
 }
 
-.p-splitter {
-    border-radius: var(--panel-rounding-size) !important;
-    box-shadow: var(--p-button-raised-shadow) !important;
+.p-inputgroup > :last-child {
+    border-top-right-radius: var(--panel-rounding-size) !important;
+    border-bottom-right-radius: var(--panel-rounding-size) !important;
 }
 
-.p-message {
+.p-tree-filter-input {
     border-radius: var(--panel-rounding-size) !important;
     box-shadow: var(--p-button-raised-shadow) !important;
 }

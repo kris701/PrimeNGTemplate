@@ -18,7 +18,7 @@ namespace PrimeNGTemplate.Plugins.Core.DatabaseInterface.Authentication
 			if (result[0].Count == 0)
 				throw new Exception("Username or password is invalid!");
 
-			var user = result[0][0].Fill<UserModel>(result);
+			var user = result[0][0].Fill<UserModel>();
 
 			return new AuthenticationOutput(user, JWTTokenHelpers.CreateToken(user, _settings.Secret, _settings.LifetimeMin));
 		}

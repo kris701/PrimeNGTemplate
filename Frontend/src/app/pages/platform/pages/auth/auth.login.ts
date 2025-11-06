@@ -1,34 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { RippleModule } from 'primeng/ripple';
-import { Router } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { TagModule } from 'primeng/tag';
-import { JWTTokenModel } from '../../../../models/Core/jWTTokenModel';
-import { AppFloatingConfigurator } from '../../../../layout/app.floatingconfigurator';
-import { LayoutService } from '../../../../layout/services/layout.service';
+import { Endpoints } from '../../../../../Endpoints';
 import { APIURL } from '../../../../../globals';
 import { AuthenticateInput } from '../../../../models/Core/authenticateInput';
 import { AuthenticationOutput } from '../../../../models/Core/authenticationOutput';
-import { Endpoints } from '../../../../../Endpoints';
-import { FloatPasswordInput } from '../../../../common/floatpasswordinput';
+import { JWTTokenModel } from '../../../../models/Core/jWTTokenModel';
+import { LayoutService } from '../../../../layout/services/layout.service';
 import { FloatTextInput } from '../../../../common/floattextinput';
-import { CommonModule } from '@angular/common';
-import { DialogModule } from 'primeng/dialog';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FloatPasswordInput } from '../../../../common/floatpasswordinput';
+import { MessageModule } from 'primeng/message';
+import { AppConfigurator } from '../../../../layout/app.configurator';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, TagModule, DialogModule, ProgressSpinnerModule, CommonModule, FloatTextInput, FloatPasswordInput],
+    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, TagModule, DialogModule, ProgressSpinnerModule, CommonModule, FloatTextInput, FloatPasswordInput, MessageModule, AppConfigurator],
     template: `
-        <app-floating-configurator />
+        <app-configurator [hidden]="true" />
         <div class=" flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
             <div class="flex flex-col items-center justify-center">
                 <div style="border-radius: 25px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 2%, rgba(33, 150, 243, 0) 110%)">
@@ -39,19 +38,27 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
                             } @else {
                                 <img class="mb-2 w-64 shrink-0 mx-auto" src="src/assets/images/logo_large_transparant_inv.png" />
                             }
-                            <div class="text-3xl font-medium mb-4">Welcome to HelvForm!</div>
-                            <span class="text-muted-color font-medium">Sign in to continue</span>
+                            <div class="text-3xl font-medium mb-4">Welcome to Platform!</div>
                         </div>
 
-                        <div class="flex flex-col gap-2">
-                            <label class="text-center" *ngIf="loginWasInvalid" [style]="{ color: 'red' }">Username or Password is invalid!</label>
+                        @if (loginOption == LoginOptions.None) {
+                            <div class="flex flex-col gap-2">
+                                <label class="text-center">Select a sign in method</label>
+                                <p-button label="Username and Password" icon="pi pi-key" styleClass="w-full" severity="secondary" raised rounded (click)="loginOption = LoginOptions.Default"></p-button>
+                            </div>
+                        } @else if (loginOption == LoginOptions.Default) {
+                            <div class="flex flex-col gap-2">
+                                <p-button icon="pi pi-arrow-left" label="Back" severity="secondary" fluid raised rounded (click)="loginOption = LoginOptions.None"></p-button>
+                                <label class="text-center">Username and Password</label>
+                                <label class="text-center" *ngIf="loginWasInvalid" [style]="{ color: 'red' }">Username or Password is invalid!</label>
 
-                            <app-floattextinput label="Username" [(value)]="LoginName" [autoFocus]="true" />
+                                <app-floattextinput label="Username or Email" icon="pi-user" [(value)]="loginName" [autoFocus]="true" />
 
-                            <app-floatpasswordinput label="Password" [(value)]="Password" (onEnter)="doLogin()" />
+                                <app-floatpasswordinput label="Password" icon="pi-asterisk" [(value)]="password" (onEnter)="doDefaultLogin()" />
 
-                            <p-button label="Sign In" styleClass="w-full" raised rounded (click)="doLogin()"></p-button>
-                        </div>
+                                <p-button label="Sign In" styleClass="w-full" raised rounded (click)="doDefaultLogin()"></p-button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -63,21 +70,24 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     `
 })
 export class Login {
+    route = inject(ActivatedRoute);
     constructor(
         private router: Router,
         private http: HttpClient,
-        layoutService: LayoutService
-    ) {
-        this.layoutService = layoutService;
-    }
+        public layoutService: LayoutService,
+    ) {}
 
-    layoutService: LayoutService;
-    LoginName: string = '';
-    Password: string = '';
+    LoginOptions = LoginOptions;
+    loginOption: LoginOptions = LoginOptions.None;
+    loginName: string = '';
+    password: string = '';
     isLoggingIn: boolean = false;
     loginWasInvalid: boolean = false;
 
-    ngOnInit() {
+    otpCode: string = '';
+    otpCodeSend: boolean = false;
+
+    async ngOnInit() {
         if (!localStorage.getItem('jwtToken')) {
             localStorage.removeItem('jwtToken');
             localStorage.removeItem('perms');
@@ -85,35 +95,48 @@ export class Login {
         }
     }
 
-    doLogin() {
+    doDefaultLogin() {
         this.isLoggingIn = true;
         this.loginWasInvalid = false;
         var input = {
-            username: this.LoginName,
-            password: this.Password
+            username: this.loginName,
+            password: this.password
         } as AuthenticateInput;
         this.http.post<AuthenticationOutput>(APIURL + Endpoints.Core.Authentication.Post_Authenticate, input).subscribe(
-            (c) => {
-                if (c.jwtToken != '') {
-                    this.loginWasInvalid = false;
-                    localStorage.removeItem('perms');
-                    const helper = new JwtHelperService();
-                    var result = helper.decodeToken<JWTTokenModel>(c.jwtToken);
-                    if (!result) return;
-                    if (result.role == null) result.role = [];
-                    var permsStr = '';
-                    result.role.forEach((p) => {
-                        permsStr += p + ';';
-                    });
-                    localStorage.setItem('perms', permsStr);
-                    localStorage.setItem('jwtToken', c.jwtToken);
-                    this.router.navigate(['/platform']);
-                }
-            },
+            (c) => this.processAuthResult(c),
             (e) => {
                 this.isLoggingIn = false;
                 this.loginWasInvalid = true;
             }
         );
     }
+
+    processAuthResult(c: AuthenticationOutput) {
+        if (c.jwtToken != '') {
+            this.loginWasInvalid = false;
+            localStorage.removeItem('perms');
+            const helper = new JwtHelperService();
+            var result = helper.decodeToken<JWTTokenModel>(c.jwtToken);
+            if (!result) return;
+            if (result.role == null) result.role = [];
+            var permsStr = '';
+            result.role.forEach((p) => {
+                permsStr += p + ';';
+            });
+            localStorage.setItem('perms', permsStr);
+            localStorage.setItem('jwtToken', c.jwtToken);
+
+            var redirectTo = sessionStorage.getItem("redirectTo");
+            if (redirectTo){
+                sessionStorage.removeItem("redirectTo");
+                window.location.replace(redirectTo);
+            }
+            else window.location.replace('/platform');
+        }
+    }
+}
+
+enum LoginOptions {
+    None,
+    Default
 }

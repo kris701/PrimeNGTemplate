@@ -12,123 +12,90 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { TagModule } from 'primeng/tag';
 import { PermissionsTable } from '../../../../PermissionsTable';
 import { AppConfigurator } from '../../../layout/app.configurator';
-import { UserModel } from '../../../models/Core/userModel';
-import { HttpClient } from '@angular/common/http';
-import { APIURL } from '../../../../globals';
-import { Endpoints } from '../../../../Endpoints';
+import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
+import { PopoverModule } from 'primeng/popover';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, UserMenu, ImpersonationMenu, OverlayBadgeModule, TagModule],
+    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, UserMenu, ImpersonationMenu, OverlayBadgeModule, TagModule, TooltipModule, ButtonModule, PopoverModule],
     template: ` <div class="layout-topbar">
-        <div class="layout-topbar-logo-container">
-            <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
-                <i class="pi pi-bars"></i>
-            </button>
-            <a class="layout-topbar-logo" routerLink="/helform">
-                @if (layoutService.isDarkTheme()) {
-                    <img src="src/assets/images/logo_small_transparant.png" [style]="{ height: '45px' }" />
-                } @else {
-                    <img src="src/assets/images/logo_small_transparant_inv.png" [style]="{ height: '45px' }" />
-                }
-                <span>Platform Name</span>
-            </a>
-        </div>
+        <p-button class="layout-menu-button" text severity="contrast" icon="pi pi-bars" (click)="layoutService.onMenuToggle()" />
 
-        <div class="layout-topbar-actions">
-            <div class="layout-config-menu">
-                <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
-                    <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
-                </button>
-                <div class="relative">
-                    <button
-                        class="layout-topbar-action layout-topbar-action-highlight"
-                        pStyleClass="@next"
-                        enterFromClass="hidden"
-                        enterActiveClass="animate-scalein"
-                        leaveToClass="hidden"
-                        leaveActiveClass="animate-fadeout"
-                        [hideOnOutsideClick]="true"
-                    >
-                        <i class="pi pi-palette"></i>
-                    </button>
-                    <app-configurator />
-                </div>
-            </div>
+        <a class="layout-topbar-logo ml-5" routerLink="/platform">
+            @if (layoutService.isDarkTheme()) {
+                <img src="src/assets/images/logo_small_transparant.png" [style]="{ height: '45px' }" />
+            } @else {
+                <img src="src/assets/images/logo_small_transparant_inv.png" [style]="{ height: '45px' }" />
+            }
+            @if (layoutService.isDesktop()) {
+                <span>Platform</span>
+            }
+        </a>
 
-            <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
-                <i class="pi pi-ellipsis-v"></i>
-            </button>
+        <div class="flex-grow"></div>
 
-            <div class="layout-topbar-menu hidden lg:block">
-                <div class="layout-topbar-menu-content">
-                    <div class=" flex flex-row items-center justify-between">
-                        <p-tag>
-                            <i class="pi pi-crown" *ngIf="JWTTokenHelpers.IsStaff()"></i>
-                            {{user.firstName}} {{user.lastName}}
-                        </p-tag>
+        <div class="flex flex-row gap-2">
+            <p-button (click)="confpop.toggle($event)" icon="pi pi-palette" text severity="contrast">
+                <p-popover #confpop>
+                    <div class="w-72">
+                        <app-configurator />
                     </div>
-                    <div class="relative">
-                        <p-button
-                            class="layout-topbar-action layout-topbar-action-highlight"
-                            pStyleClass="@next"
-                            enterFromClass="hidden"
-                            enterActiveClass="animate-scalein"
-                            leaveToClass="hidden"
-                            leaveActiveClass="animate-fadeout"
-                            [hideOnOutsideClick]="true"
-                        >
-                            <i class="pi pi-user"></i>
-                        </p-button>
-                        <app-usermenu [style]="{ 'z-index': '9999' }" />
+                </p-popover>
+            </p-button>
+
+            <p-button (click)="toggleDarkMode()" [icon]="layoutService.isDarkTheme() ? 'pi pi-moon' : 'pi pi-sun'" text severity="contrast" />
+
+            @if (!canEditProfile) {
+                <p-button (click)="logOut()" icon="pi pi-sign-out" severity="danger" [disabled]="isImpersonating"> </p-button>
+            } @else {
+                <p-button (click)="userpopup.toggle($event)" icon="pi pi-user">
+                    <p-popover #userpopup>
+                        <div class="w-72">
+                            <app-usermenu />
+                        </div>
+                    </p-popover>
+                </p-button>
+            }
+
+            <p-button (click)="imppopup.toggle($event)" icon="pi pi-at" *ngIf="canImpersonate()">
+                <p-popover #imppopup>
+                    <div class="w-72">
+                        <app-impersonationmenu />
                     </div>
-                    <div class="relative" [hidden]="!CanImpersonate()">
-                        <button
-                            class="layout-topbar-action layout-topbar-action-highlight"
-                            pStyleClass="@next"
-                            enterFromClass="hidden"
-                            enterActiveClass="animate-scalein"
-                            leaveToClass="hidden"
-                            leaveActiveClass="animate-fadeout"
-                            [hideOnOutsideClick]="true"
-                        >
-                            <i class="pi pi-at"></i>
-                        </button>
-                        <app-impersonationmenu [style]="{ 'z-index': '9999' }" />
-                    </div>
-                </div>
-            </div>
+                </p-popover>
+            </p-button>
         </div>
     </div>`
 })
 export class AppTopbar {
-    items!: MenuItem[];
-    user: UserModel = {} as UserModel;
     unreadMessages: number = 0;
 
     JWTTokenHelpers = JWTTokenHelpers;
 
+    isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
+    canImpersonatePerm: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_Impersonate);
+    canEditProfile: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_EditProfile);
+
     constructor(
+        private router: Router,
         public layoutService: LayoutService,
-        private http: HttpClient
     ) {
-    }
-
-    ngOnInit(){
-        this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + "?ID=" + JWTTokenHelpers.GetUserID()).subscribe(r => this.user = r)
-    }
-
-    showUnreadMessageBadge() {
-        return this.unreadMessages == 0;
     }
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
     }
 
-    CanImpersonate(): boolean {
-        if (PermissionHelpers.HasPermission(PermissionsTable.Core_User_Impersonate) == true || localStorage.getItem('impersonating')) return true;
+    canImpersonate(): boolean {
+        if (this.canImpersonatePerm || localStorage.getItem('impersonating')) return true;
         return false;
+    }
+
+    logOut() {
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('perms');
+        this.router.navigate(['/']);
     }
 }

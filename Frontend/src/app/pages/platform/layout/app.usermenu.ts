@@ -23,68 +23,67 @@ import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
 import { PermissionHelpers } from '../helpers/permissionHelpers';
 import { FieldsetModule } from 'primeng/fieldset';
 import { firstValueFrom } from 'rxjs';
+import { FloatPasswordInput } from "../../../common/floatpasswordinput";
 
 @Component({
     selector: 'app-usermenu',
     standalone: true,
     imports: [
-        CommonModule,
-        FormsModule,
-        SelectButtonModule,
-        DialogModule,
-        PasswordModule,
-        ButtonModule,
-        FloatLabelModule,
-        MultiSelectModule,
-        InputTextModule,
-        TooltipModule,
-        ChipModule,
-        FloatTextInput,
-        FieldsetModule
-    ],
+    CommonModule,
+    FormsModule,
+    SelectButtonModule,
+    DialogModule,
+    PasswordModule,
+    ButtonModule,
+    FloatLabelModule,
+    MultiSelectModule,
+    InputTextModule,
+    TooltipModule,
+    ChipModule,
+    FloatTextInput,
+    FieldsetModule,
+    FloatPasswordInput
+],
     template: `
         <div class="flex flex-col gap-2">
             <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="showChangePassword()" [style]="{ width: '100%' }" [hidden]="!canWriteSelf" />
             <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="showEditProfile()" [style]="{ width: '100%' }" />
             <p-button icon="pi pi-sign-out" label="Log Out" severity="danger" pTooltip="Log out and return to the login screen" (click)="logOut()" [disabled]="isImpersonating" [style]="{ width: '100%' }" />
-
-            <p-dialog header="Change Password" [(visible)]="changePasswordVisible" [style]="{ width: '30vw' }" [modal]="true" [draggable]="false">
-                <div class="flex flex-col gap-2">
-                    <p-password id="password1" [(ngModel)]="oldPassword" placeholder="Old Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="false"></p-password>
-                    <p-password id="password2" [(ngModel)]="newPassword1" placeholder="New Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="true"></p-password>
-                    <p-password id="password3" [(ngModel)]="newPassword2" placeholder="Repeat new Password" [toggleMask]="true" styleClass="mb-1" [fluid]="true" [feedback]="true"></p-password>
-                </div>
-                <ng-template #footer>
-                    <p-button label="Save" icon="pi pi-save" (click)="changePassword()" />
-                </ng-template>
-            </p-dialog>
-
-            <p-dialog header="Profile" [(visible)]="editProfileVisible" [breakpoints]="{ '960px': '95vw' }" [style]="{ width: '50vw' }" [modal]="true" [draggable]="false">
-                <div class="flex flex-col gap-2">
-                    <p>Here you can view and modify your current profile information</p>
-                    <p-fieldset legend="Login Information">
-                        <div class="flex flex-col gap-2">
-                            <p>Your login name must be unique!</p>
-                            <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canWriteSelf" label="Login Name" icon="pi-sign-in" />
-                        </div>
-                    </p-fieldset>
-                    <p-fieldset legend="General Information">
-                        <div class="flex flex-col gap-2">
-                            <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWriteSelf" label="First Name" icon="pi-pencil" />
-                            <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWriteSelf" label="Last Name" icon="pi-pencil" />
-                            <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWriteSelf" label="E-Mail" icon="pi-envelope" />
-                        </div>
-                    </p-fieldset>
-                </div>
-                <ng-template #footer>
-                    <p-button label="Save" icon="pi pi-save" (click)="updateUser()" [hidden]="!canWriteSelf" />
-                </ng-template>
-            </p-dialog>
         </div>
-    `,
-    host: {
-        class: 'hidden absolute top-[3.25rem] right-0 w-72 p-4 card border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]'
-    }
+
+        <p-dialog header="Change Password" [(visible)]="changePasswordVisible" [style]="{ width: '30vw' }" [modal]="true" [draggable]="false" appendTo="body">
+            <div class="flex flex-col gap-2">
+                <app-floatpasswordinput [(value)]="oldPassword" [feedback]="false" label="Current Password" />
+                <app-floatpasswordinput [(value)]="newPassword1" [feedback]="true" label="New Password" />
+                <app-floatpasswordinput [(value)]="newPassword2" [feedback]="true" label="Repeat new Password" />
+            </div>
+            <ng-template #footer>
+                <p-button label="Save" icon="pi pi-save" (click)="changePassword()" />
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog header="Profile" [(visible)]="editProfileVisible" [breakpoints]="{ '960px': '95vw' }" [style]="{ width: '50vw' }" [modal]="true" [draggable]="false" appendTo="body">
+            <div class="flex flex-col gap-2">
+                <p>Here you can view and modify your current profile information</p>
+                <p-fieldset legend="Login Information">
+                    <div class="flex flex-col gap-2">
+                        <p>Your login name must be unique!</p>
+                        <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canWriteSelf" label="Login Name" icon="pi-sign-in" />
+                    </div>
+                </p-fieldset>
+                <p-fieldset legend="General Information">
+                    <div class="flex flex-col gap-2">
+                        <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWriteSelf" label="First Name" icon="pi-pencil" />
+                        <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWriteSelf" label="Last Name" icon="pi-pencil" />
+                        <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWriteSelf" label="E-Mail" icon="pi-envelope" />
+                    </div>
+                </p-fieldset>
+            </div>
+            <ng-template #footer>
+                <p-button label="Save" icon="pi pi-save" (click)="updateUser()" [hidden]="!canWriteSelf" />
+            </ng-template>
+        </p-dialog>
+    `
 })
 export class UserMenu {
     changePasswordVisible: boolean = false;
@@ -92,7 +91,7 @@ export class UserMenu {
     newPassword1: string = '';
     newPassword2: string = '';
 
-    canWriteSelf: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_Users_Own_Write);
+    canWriteSelf: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_EditProfile);
     isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
 
     editProfileVisible: boolean = false;

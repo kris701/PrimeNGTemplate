@@ -35,14 +35,14 @@ namespace PrimeNGTemplate.Plugins.Core.Services
 				true));
 
 			await _model.ExecuteAsync(new PermissionModel(
-				PermissionsTable.Core_Users_Own_Read,
-				"Read your own user",
-				"Ability to read your own user.",
+				PermissionsTable.Core_User_ChangePassword,
+				"Change Password",
+				"Ability to change your own password.",
 				false));
 			await _model.ExecuteAsync(new PermissionModel(
-				PermissionsTable.Core_Users_Own_Write,
-				"Write your own user",
-				"Ability to modify your own user.",
+				PermissionsTable.Core_User_EditProfile,
+				"Edit Profile",
+				"Ability to edit your own profile.",
 				false));
 
 			await _model.ExecuteAsync(new PermissionModel(

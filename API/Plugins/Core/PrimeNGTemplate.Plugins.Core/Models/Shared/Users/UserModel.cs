@@ -1,4 +1,4 @@
-﻿using DatabaseSharp.Models;
+﻿using DatabaseSharp.Attributes;
 using PrimeNGTemplate.API.Tools;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;

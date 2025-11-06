@@ -7,7 +7,7 @@ import { ToastModule } from 'primeng/toast';
     standalone: true,
     imports: [RouterModule, ToastModule],
     template: `
-        <p-toast />
+        <p-toast position="bottom-left" />
         <router-outlet></router-outlet>
     `
 })

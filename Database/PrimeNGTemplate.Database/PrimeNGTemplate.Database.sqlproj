@@ -79,7 +79,7 @@
     <Build Include="Global\Schema\GlobalSchema.sql" />
     <Build Include="Global\Programmability\Types\StringListType.sql" />
     <PostDeploy Include="postDeploy.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_Authenticate.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_AuthenticateByUsername.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_Impersonate.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_UpdatePassword.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Users\SP_AddUser.sql" />
@@ -90,6 +90,7 @@
     <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_AddPermissionIfNotExist.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_GetAllPermissions.sql" />
     <Build Include="Core\Programmability\Functions\IsStaff.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_AuthenticateByUserID.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PrimeNGTemplate.Database-Test.publish.xml" />

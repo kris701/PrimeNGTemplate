@@ -15,14 +15,14 @@ import { APIURL } from '../../../../globals';
 import { AuthenticationOutput } from '../../../models/Core/authenticationOutput';
 import { ImpersonateInput } from '../../../models/Core/impersonateInput';
 import { JWTTokenModel } from '../../../models/Core/jWTTokenModel';
-import { FloatSelectControl } from '../../../common/floatselectcontrol';
 import { ListUserModel } from '../../../models/Core/listUserModel';
 import { firstValueFrom } from 'rxjs';
+import { FloatSelect } from "../../../common/floatselect";
 
 @Component({
     selector: 'app-impersonationmenu',
     standalone: true,
-    imports: [CommonModule, FormsModule, SelectButtonModule, DialogModule, PasswordModule, ButtonModule, SelectModule, TooltipModule, FloatSelectControl],
+    imports: [CommonModule, FormsModule, SelectButtonModule, DialogModule, PasswordModule, ButtonModule, SelectModule, TooltipModule, FloatSelect],
     template: `
         <div class="flex flex-col gap-2" *ngIf="!isImpersonating()">
             <span>Select a user to impersonate.</span>
@@ -31,12 +31,9 @@ import { firstValueFrom } from 'rxjs';
         <div class="flex flex-col gap-4" *ngIf="isImpersonating()">
             <p-button icon="pi pi-eject" severity="danger" label="Stop Impersonating" (click)="stopImpersonate()" [style]="{ width: '100%' }" />
         </div>
-    `,
-    host: {
-        class: 'hidden absolute top-[3.25rem] right-0 w-72 p-4 card border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]'
-    }
+    `
 })
-export class ImpersonationMenu {    
+export class ImpersonationMenu {
     targetID: string = '';
     allUsers : ListUserModel[] = []
 

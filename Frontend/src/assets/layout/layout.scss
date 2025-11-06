@@ -13,6 +13,7 @@
 @use './_typography';
 @use './_commoncomponents';
 @use './_dashboard';
+@use './_changelog';
 @use './_masterclass';
 @use './_tables';
 @use './_editor';
@@ -22,3 +23,7 @@
 @use './_landing';
 @use './_rounding';
 @use './_primengoverrides';
+@use './_galleria';
+@use './_dialog';
+@use './_fieldset';
+@use './_popover';

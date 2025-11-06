@@ -26,9 +26,13 @@ import { PermissionsTable } from '../../../../../../PermissionsTable';
             </div>
             <p-tree [value]="items" selectionMode="checkbox" styleClass="w-full md:w-[30rem]" [(selection)]="selectedItems" (onNodeSelect)="nodeSelectionChanged()" (onNodeUnselect)="nodeSelectionChanged()" [filter]="true" filterPlaceholder="Search">
                 <ng-template let-node pTemplate="default">
-                    <p class="text-surface-500">{{ node.key }}</p>
-                    <b>{{ node.label }}</b>
-                    @if (node.data) {
+                    <p>
+                        <i class="text-surface-300 mb-0">{{ node.key }}</i>
+                    </p>
+                    @if (node.label && node.label != '') {
+                        <b>{{ node.label }}</b>
+                    }
+                    @if (node.data && node.data.description && node.data.description != '') {
                         <p class="text-surface-300">{{ node.data.description }}</p>
                     }
                 </ng-template>
@@ -47,17 +51,17 @@ export class PermissionsEditor implements OnChanges {
     items!: TreeNode[];
     selectedItems!: TreeNode[];
     iconMap: { [key: string]: string } = {
-        'core.user': 'pi pi-user'  
+        'core.user': 'pi pi-user'
     };
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['selected'] && this.lastSelected != changes['selected'].currentValue) {
             this.lastSelected = changes['selected'].currentValue;
             this.loadTree();
-        } 
-        else if (changes['options'] && changes['options'].previousValue != changes['options'].currentValue) 
+        }
+        else if (changes['options'] && changes['options'].previousValue != changes['options'].currentValue)
             this.loadTree();
-        else if (changes['allowStaff'] && changes['allowStaff'].previousValue != changes['allowStaff'].currentValue) 
+        else if (changes['allowStaff'] && changes['allowStaff'].previousValue != changes['allowStaff'].currentValue)
             this.loadTree();
     }
 

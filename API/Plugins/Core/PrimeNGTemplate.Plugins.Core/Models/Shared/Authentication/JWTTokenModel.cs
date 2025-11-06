@@ -6,6 +6,8 @@ namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication
 	{
 		[JsonPropertyName("nameid")]
 		public string NameID { get; set; }
+		[JsonPropertyName("groupsid")]
+		public string GroupsID { get; set; }
 		[JsonPropertyName("role")]
 		public List<string> Roles { get; set; }
 		[JsonPropertyName("isstaff")]

@@ -6,15 +6,18 @@ import { $t, updatePreset, updateSurfacePalette } from '@primeng/themes';
 import Aura from '@primeng/themes/aura';
 import Lara from '@primeng/themes/lara';
 import Nora from '@primeng/themes/nora';
+import Material from '@primeng/themes/material';
 import { PrimeNG } from 'primeng/config';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { LayoutService } from './services/layout.service';
+import { Button } from 'primeng/button';
 
 const presets = {
     Aura,
     Lara,
-    Nora
+    Nora,
+    Material
 } as const;
 
 declare type KeyOfType<T> = keyof T extends infer U ? U : never;
@@ -40,7 +43,7 @@ declare type SurfacesType = {
 @Component({
     selector: 'app-configurator',
     standalone: true,
-    imports: [CommonModule, FormsModule, SelectButtonModule, TooltipModule],
+    imports: [CommonModule, FormsModule, SelectButtonModule, TooltipModule, Button],
     template: `
         <div class="flex flex-col gap-4">
             <div>
@@ -55,7 +58,7 @@ declare type SurfacesType = {
                             class="border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-none outline-offset-1"
                             pTooltip="{{ primaryColor?.name }}"
                             [style]="{
-                                'background-color': primaryColor?.name === 'helvion' ? 'var(--p-helvion-500)' : primaryColor?.palette?.['500']
+                                'background-color': primaryColor?.name === 'custom' ? 'var(--p-custom-500)' : primaryColor?.palette?.['500']
                             }"
                         ></button>
                     }
@@ -73,7 +76,7 @@ declare type SurfacesType = {
                             class="border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-none outline-offset-1"
                             pTooltip="{{ surface?.name }}"
                             [style]="{
-                                'background-color': surface?.name === 'helvion' ? 'var(--p-helvion-500)' : surface?.palette?.['500']
+                                'background-color': surface?.name === 'custom' ? 'var(--p-custom-500)' : surface?.palette?.['500']
                             }"
                         ></button>
                     }
@@ -87,11 +90,11 @@ declare type SurfacesType = {
                 <span class="text-sm text-muted-color font-semibold">Menu Mode</span>
                 <p-selectbutton [ngModel]="menuMode()" (ngModelChange)="onMenuModeChange($event)" [options]="menuModeOptions" [allowEmpty]="false" size="small" />
             </div>
+            <div class="flex flex-col gap-2">
+                <p-button label="Reset to Default" (onClick)="resetToDefault()" />
+            </div>
         </div>
-    `,
-    host: {
-        class: 'hidden absolute top-[3.25rem] right-0 w-72 p-4 card border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]'
-    }
+    `
 })
 export class AppConfigurator {
     router = inject(Router);
@@ -440,5 +443,9 @@ export class AppConfigurator {
 
     onMenuModeChange(event: string) {
         this.layoutService.layoutConfig.update((prev) => ({ ...prev, menuMode: event }));
+    }
+
+    resetToDefault() {
+        this.layoutService.resetToDefault();
     }
 }

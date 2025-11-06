@@ -1,6 +1,6 @@
-IF ((SELECT COUNT(*) FROM [COR].[Users] WHERE LoginPassword = '21232F297A57A5A743894A0E4A801FC3') = 0)
+IF ((SELECT COUNT(*) FROM [COR].[Users]) = 0)
 BEGIN
 	DECLARE @NewUserID UNIQUEIDENTIFIER = NEWID();
-	INSERT INTO [COR].[Users] VALUES (@NewUserID, 'Admin', 'Admin', 'email', 'admin', '21232F297A57A5A743894A0E4A801FC3', 1, 1, GETUTCDATE(), NULL)
+	INSERT INTO [COR].[Users] VALUES (@NewUserID, 'Admin', 'Admin', 'email', 'admin', 'Fq5zcVIv03NELaQhmsp9kuOAhi6/SkkYP+KutfUx9LpaNXbg', 1, 1, GETUTCDATE(), NULL)
 	INSERT INTO [COR].[UserPermissions] SELECT NEWID(), @NewUserID, PK_ID FROM [COR].[Permissions]
 END

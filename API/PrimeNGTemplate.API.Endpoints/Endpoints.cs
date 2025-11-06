@@ -6,6 +6,7 @@ public static class Endpoints {
 		public static class Authentication {
 			public const string Name = "endpoints/core/authentication";
 			public const string Post_Authenticate = "endpoints/core/authentication";
+			public const string Post_UpdatePassword = "endpoints/core/authentication/updatepassword";
 			public const string Post_Impersonate = "endpoints/core/authentication/impersonate";
 		}
 		public static class Permissions {

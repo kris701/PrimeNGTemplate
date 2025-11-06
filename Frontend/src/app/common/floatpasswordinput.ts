@@ -6,16 +6,21 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { PasswordModule } from 'primeng/password';
+import { InputGroup } from 'primeng/inputgroup';
+import { InputGroupAddon } from 'primeng/inputgroupaddon';
 
 @Component({
     selector: 'app-floatpasswordinput',
-    imports: [FormsModule, CommonModule, FloatLabelModule, InputTextModule, InputIconModule, IconFieldModule, PasswordModule],
+    imports: [FormsModule, CommonModule, FloatLabelModule, InputTextModule, InputIconModule, IconFieldModule, PasswordModule, InputGroup, InputGroupAddon],
     template: `
-        <p-floatlabel variant="on">
-            <p-iconfield>
-                <p-inputicon styleClass="pi {{ icon }}" *ngIf="icon != ''" />
+        <p-inputgroup style="height:2.5rem">
+            @if (icon != '') {
+                <p-inputgroup-addon>
+                    <i class="pi {{ icon }}"></i>
+                </p-inputgroup-addon>
+            }
+            <p-floatlabel variant="on">
                 <p-password
-                    class="raiseround"
                     panelStyleClass="raiseround"
                     [ngClass]="isValid ? '' : 'ng-invalid ng-dirty'"
                     id="floatpasswordlabel"
@@ -28,10 +33,12 @@ import { PasswordModule } from 'primeng/password';
                     (change)="valueChanged()"
                     (keyup.enter)="onEnter.emit()"
                     appendTo="body"
+                    style="border-radius: inherit"
+                    [inputStyle]="{ 'border-radius': 'inherit' }"
                 />
-            </p-iconfield>
-            <label for="floatpasswordlabel">{{ label }}</label>
-        </p-floatlabel>
+                <label for="floatpasswordlabel">{{ label }}</label>
+            </p-floatlabel>
+        </p-inputgroup>
     `
 })
 export class FloatPasswordInput implements OnChanges {

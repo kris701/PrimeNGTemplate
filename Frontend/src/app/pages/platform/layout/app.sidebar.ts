@@ -8,9 +8,9 @@ import { LayoutService } from '../../../layout/services/layout.service';
     imports: [AppMenu],
     template: ` <div class="layout-sidebar">
         @if (layoutService.isDarkTheme()) {
-            <img src="src/assets/images/logo_menu.png" [style]="{ position: 'absolute', opacity: '0.1', 'max-width': '80%', 'margin-left': '-20px', 'margin-top': '-10px' }" />
+            <img src="src/assets/images/logo_menu.png" loading="lazy" class="nondragable" [style]="{ position: 'absolute', opacity: '0.1', 'max-width': '80%', 'margin-left': '-20px', 'margin-top': '-10px' }" />
         } @else {
-            <img src="src/assets/images/logo_menu_inv.png" [style]="{ position: 'absolute', opacity: '0.1', 'max-width': '80%', 'margin-left': '-20px', 'margin-top': '-10px' }" />
+            <img src="src/assets/images/logo_menu_inv.png" loading="lazy" class="nondragable" [style]="{ position: 'absolute', opacity: '0.1', 'max-width': '80%', 'margin-left': '-20px', 'margin-top': '-10px' }" />
         }
         <app-menu></app-menu>
     </div>`
