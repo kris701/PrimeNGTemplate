@@ -1,0 +1,12 @@
+CREATE PROCEDURE [COR].[Impersonate]
+@ExecID UNIQUEIDENTIFIER, @TargetUser UNIQUEIDENTIFIER
+AS
+BEGIN
+    SELECT *
+    FROM   [COR].[Users]
+    WHERE  PK_ID = @TargetUser;
+    
+    SELECT *
+    FROM   [COR].[UserPermissions]
+    WHERE  FK_User_ID = @TargetUser;
+END

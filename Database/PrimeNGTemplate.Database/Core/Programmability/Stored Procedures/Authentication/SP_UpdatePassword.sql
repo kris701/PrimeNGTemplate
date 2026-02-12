@@ -1,7 +1,0 @@
-CREATE PROCEDURE [COR].[SP_UpdatePassword]
-	@ExecID UNIQUEIDENTIFIER,
-	@NewPassword NVARCHAR(MAX)
-AS
-BEGIN TRANSACTION
-	UPDATE [COR].[Users] SET LoginPassword = @NewPassword WHERE PK_ID = @ExecID;
-COMMIT

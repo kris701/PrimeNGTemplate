@@ -1,0 +1,9 @@
+﻿CREATE FUNCTION [COR].[IsStaff]
+(@ExecID UNIQUEIDENTIFIER)
+RETURNS BIT
+AS
+BEGIN
+    RETURN (SELECT IsStaff
+            FROM   [COR].[Users]
+            WHERE  PK_ID = @ExecID);
+END

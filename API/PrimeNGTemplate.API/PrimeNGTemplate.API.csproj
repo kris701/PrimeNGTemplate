@@ -15,7 +15,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Plugins\*\*\*.csproj" Exclude="..\Plugins\*\*\*.Tests.csproj" />
+		<ProjectReference Include="..\Plugins\COR\PrimeNGTemplate.Plugins.COR\PrimeNGTemplate.Plugins.COR.csproj" />
 	</ItemGroup>
 
 
@@ -29,7 +29,7 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="autoconst -m -o ../../FrontEnd/src -p TypeScriptProducer -t ../Plugins/Core/PrimeNGTemplate.Plugins.Core/PermissionsTable.cs" ContinueOnError="true" />
+		<Exec Command="autoconst -m -o ../../FrontEnd/src -p TypeScriptProducer -t ../Plugins/COR/PrimeNGTemplate.Plugins.COR/PermissionsTable.cs" ContinueOnError="true" />
 	</Target>
 
 </Project>

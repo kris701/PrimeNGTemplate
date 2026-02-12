@@ -1,9 +1,9 @@
 // This document is auto generated!
 export const PermissionsTable = {
-	Core_Users_Read: "core.users.read",
-	Core_Users_Write: "core.users.write",
-	Core_User_ChangePassword: "core.user.changepassword",
-	Core_User_EditProfile: "core.user.editprofile",
-	Core_User_Impersonate: "core.impersonate",
-	Core_Permission_Read: "core.permission.read",
+	COR_Users_Read: "cor.users.read",
+	COR_Users_Write: "cor.users.write",
+	COR_Users_Own_Read: "cor.users.own.read",
+	COR_Users_Own_Write: "cor.users.own.write",
+	COR_User_Impersonate: "cor.impersonate",
+	COR_Permission_Read: "cor.permission.read",
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ChildrenOutletContexts, RouterModule } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
@@ -8,7 +8,13 @@ import { ToastModule } from 'primeng/toast';
     imports: [RouterModule, ToastModule],
     template: `
         <p-toast position="bottom-left" />
-        <router-outlet></router-outlet>
+        <router-outlet [@routeAnimations]="getRouteAnimationData()"></router-outlet>
     `
 })
-export class AppComponent {}
+export class AppComponent {
+    constructor(private contexts: ChildrenOutletContexts) {}
+
+    getRouteAnimationData() {
+        return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+    }
+}

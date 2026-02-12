@@ -16,14 +16,16 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Endpoints } from '../../../../Endpoints';
 import { APIURL } from '../../../../globals';
 import { PermissionsTable } from '../../../../PermissionsTable';
-import { FloatTextInput } from '../../../common/floattextinput';
-import { UpdatePasswordInput } from '../../../models/Core/updatePasswordInput';
-import { UserModel } from '../../../models/Core/userModel';
+import { UpdatePasswordInput } from '../../../models/COR/updatePasswordInput';
+import { UserModel } from '../../../models/COR/userModel';
 import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
 import { PermissionHelpers } from '../helpers/permissionHelpers';
 import { FieldsetModule } from 'primeng/fieldset';
 import { firstValueFrom } from 'rxjs';
-import { FloatPasswordInput } from "../../../common/floatpasswordinput";
+import { TextareaModule } from 'primeng/textarea';
+import { FloatTextInput } from '../../../common/components/floattextinput';
+import { FloatDatePicker } from '../../../common/components/floatdatepicker';
+import { FloatPasswordInput } from "../../../common/components/floatpasswordinput";
 
 @Component({
     selector: 'app-usermenu',
@@ -42,17 +44,29 @@ import { FloatPasswordInput } from "../../../common/floatpasswordinput";
     ChipModule,
     FloatTextInput,
     FieldsetModule,
+    TextareaModule,
     FloatPasswordInput
 ],
     template: `
         <div class="flex flex-col gap-2">
-            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="showChangePassword()" [style]="{ width: '100%' }" [hidden]="!canWriteSelf" />
-            <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="showEditProfile()" [style]="{ width: '100%' }" />
+            @if(currentUser){
+                <div class="flex flex-row gap-2 items-center">
+                    <div class="flex h-10 w-10 items-center rounded-full" style="background:var(--surface-hover)">
+                        <b class="w-full text-center">{{currentUser.firstName[0]}}{{currentUser.lastName[0]}}</b>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span>{{currentUser.firstName}} {{currentUser.lastName}}</span>
+                        <span style="color:var(--text-color-secondary)">{{currentUser.email}}</span>
+                    </div>
+                </div>
+            }
+            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="changePasswordVisible = true" [style]="{ width: '100%' }" [hidden]="!canWriteSelf" />
+            <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="editProfileVisible = true" [style]="{ width: '100%' }" />
             <p-button icon="pi pi-sign-out" label="Log Out" severity="danger" pTooltip="Log out and return to the login screen" (click)="logOut()" [disabled]="isImpersonating" [style]="{ width: '100%' }" />
         </div>
 
         <p-dialog header="Change Password" [(visible)]="changePasswordVisible" [style]="{ width: '30vw' }" [modal]="true" [draggable]="false" appendTo="body">
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2 pt-2">
                 <app-floatpasswordinput [(value)]="oldPassword" [feedback]="false" label="Current Password" />
                 <app-floatpasswordinput [(value)]="newPassword1" [feedback]="true" label="New Password" />
                 <app-floatpasswordinput [(value)]="newPassword2" [feedback]="true" label="Repeat new Password" />
@@ -62,22 +76,27 @@ import { FloatPasswordInput } from "../../../common/floatpasswordinput";
             </ng-template>
         </p-dialog>
 
-        <p-dialog header="Profile" [(visible)]="editProfileVisible" [breakpoints]="{ '960px': '95vw' }" [style]="{ width: '50vw' }" [modal]="true" [draggable]="false" appendTo="body">
-            <div class="flex flex-col gap-2">
-                <p>Here you can view and modify your current profile information</p>
-                <p-fieldset legend="Login Information">
-                    <div class="flex flex-col gap-2">
-                        <p>Your login name must be unique!</p>
-                        <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canWriteSelf" label="Login Name" icon="pi-sign-in" />
-                    </div>
-                </p-fieldset>
-                <p-fieldset legend="General Information">
-                    <div class="flex flex-col gap-2">
-                        <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWriteSelf" label="First Name" icon="pi-pencil" />
-                        <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWriteSelf" label="Last Name" icon="pi-pencil" />
-                        <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWriteSelf" label="E-Mail" icon="pi-envelope" />
-                    </div>
-                </p-fieldset>
+        <p-dialog header="Profile" [(visible)]="editProfileVisible" [breakpoints]="{ '960px': '95vw' }" [style]="{ width: '50vw' }" [modal]="true" appendTo="body">
+            <div class="flex flex-col gap-2 p-2">
+                @if(currentUser){
+                    <p>Here you can view and modify your current profile information</p>
+                    <p-fieldset legend="Login Information">
+                        <div class="flex flex-col gap-2">
+                            <p>Your login name must be unique!</p>
+                            <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canWriteSelf" label="Login Name" icon="pi-sign-in" />
+                        </div>
+                    </p-fieldset>
+                    <p-fieldset legend="General Information">
+                        <div class="flex flex-col gap-2">
+                            <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWriteSelf" label="First Name" icon="pi-pencil" />
+                            <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWriteSelf" label="Last Name" icon="pi-pencil" />
+                            <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWriteSelf" label="E-Mail" icon="pi-envelope" />
+                        </div>
+                    </p-fieldset>
+                }
+                @else {
+                    <p>Error loading user...</p>
+                }
             </div>
             <ng-template #footer>
                 <p-button label="Save" icon="pi pi-save" (click)="updateUser()" [hidden]="!canWriteSelf" />
@@ -91,11 +110,14 @@ export class UserMenu {
     newPassword1: string = '';
     newPassword2: string = '';
 
-    canWriteSelf: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_EditProfile);
+    canWriteSelf: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_Users_Own_Write);
     isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
 
     editProfileVisible: boolean = false;
-    currentUser: UserModel = {} as UserModel;
+    currentUser: UserModel | null = null;
+
+    currentAPIKeyExpiresAt : Date = new Date();
+    currentAPIKey : string = "";
 
     constructor(
         private router: Router,
@@ -104,17 +126,13 @@ export class UserMenu {
     ) {}
 
     async ngOnInit() {
-        this.currentUser = await firstValueFrom(this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + JWTTokenHelpers.GetUserID()))
+        this.currentUser = await firstValueFrom(this.http.get<UserModel>(APIURL + Endpoints.COR.Users.Get_User + '?ID=' + JWTTokenHelpers.GetUserID()));
     }
 
     logOut() {
         localStorage.removeItem('jwtToken');
         localStorage.removeItem('perms');
         this.router.navigate(['/']);
-    }
-
-    showChangePassword() {
-        this.changePasswordVisible = true;
     }
 
     async changePassword() {
@@ -127,17 +145,13 @@ export class UserMenu {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword1
         } as UpdatePasswordInput;
-        await firstValueFrom(this.http.patch(APIURL + Endpoints.Core.Users.Patch_UpdatePassword, input))
+        await firstValueFrom(this.http.post<UpdatePasswordInput>(APIURL + Endpoints.COR.Authentication.Post_UpdatePassword, input))
         this.router.navigate(['/platform/auth']);
         this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Password updated!' });
     }
 
-    showEditProfile() {
-        this.editProfileVisible = true;
-    }
-
     async updateUser() {
-        this.currentUser = await firstValueFrom(this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser))
+        await firstValueFrom(this.http.patch<UserModel>(APIURL + Endpoints.COR.Users.Patch_UpdateUser, this.currentUser));
         this.editProfileVisible = false;
         this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Profile updated!' });
     }

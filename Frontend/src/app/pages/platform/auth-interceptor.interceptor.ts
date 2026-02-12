@@ -23,9 +23,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             if (error instanceof HttpErrorResponse && error.status === 401) {
                 if (JWTTokenHelpers.IsExpired()) localStorage.removeItem('jwtToken');
                 if (localStorage.getItem('impersonating')) localStorage.removeItem('impersonating');
-                sessionStorage.setItem("redirectTo", router.routerState.snapshot.url);
+                sessionStorage.setItem('redirectTo', router.routerState.snapshot.url);
                 router.navigate(['/platform/auth']);
-            } else messageService.add({ severity: 'error', summary: error.error.message, detail: error.error.details, life: 10000 });
+            } else {
+                if (error.error.details && error.error.message)
+                {
+                    if (error.error.details && error.error.details.length < 256) messageService.add({ severity: 'error', summary: error.error.message, detail: error.error.details, life: 10000 });
+                    else messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message, life: 10000 });
+                }
+                else if (error.statusText){
+                    messageService.add({ severity: 'error', summary: 'Error', detail: error.statusText, life: 10000 });
+                }
+            }
             return throwError(() => error);
         })
     );

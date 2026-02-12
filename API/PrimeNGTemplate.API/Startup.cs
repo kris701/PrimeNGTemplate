@@ -1,5 +1,5 @@
 ﻿using Microsoft.OpenApi;
-using PrimeNGTemplate.Plugins.Core.Filters;
+using PrimeNGTemplate.API.Filters;
 using System.Reflection;
 using Uni.API;
 

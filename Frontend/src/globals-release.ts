@@ -1,2 +1,2 @@
-export const APIURL = "APIURL"
-export const VersionTag = "0.0.1"
+export const APIURL = 'WEBSITE';
+export const VersionTag = "0.2.7"

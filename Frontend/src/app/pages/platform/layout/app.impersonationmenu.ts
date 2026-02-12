@@ -12,12 +12,12 @@ import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
 import { Endpoints } from '../../../../Endpoints';
 import { APIURL } from '../../../../globals';
-import { AuthenticationOutput } from '../../../models/Core/authenticationOutput';
-import { ImpersonateInput } from '../../../models/Core/impersonateInput';
-import { JWTTokenModel } from '../../../models/Core/jWTTokenModel';
-import { ListUserModel } from '../../../models/Core/listUserModel';
+import { AuthenticationOutput } from '../../../models/COR/authenticationOutput';
+import { ImpersonateInput } from '../../../models/COR/impersonateInput';
+import { JWTTokenModel } from '../../../models/COR/jWTTokenModel';
+import { ListUserModel } from '../../../models/COR/listUserModel';
+import { FloatSelect } from '../../../common/components/floatselect';
 import { firstValueFrom } from 'rxjs';
-import { FloatSelect } from "../../../common/floatselect";
 
 @Component({
     selector: 'app-impersonationmenu',
@@ -25,7 +25,7 @@ import { FloatSelect } from "../../../common/floatselect";
     imports: [CommonModule, FormsModule, SelectButtonModule, DialogModule, PasswordModule, ButtonModule, SelectModule, TooltipModule, FloatSelect],
     template: `
         <div class="flex flex-col gap-2" *ngIf="!isImpersonating()">
-            <span>Select a user to impersonate.</span>
+            <span class="text-sm text-muted-color font-semibold">Select a user to impersonate</span>
             <app-floatselect [(selected)]="targetID" [options]="allUsers" optionLabel="loginName" optionValue="id" (selectedChange)="impersonate()" icon="pi-user" />
         </div>
         <div class="flex flex-col gap-4" *ngIf="isImpersonating()">
@@ -43,13 +43,13 @@ export class ImpersonationMenu {
     ) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         if (this.isImpersonating()) return;
-        this.loadAllUsers();
+        await this.loadAllUsers();
     }
 
     async loadAllUsers(){
-        this.allUsers = await firstValueFrom(this.http.get<ListUserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers))
+        this.allUsers = await firstValueFrom(this.http.get<ListUserModel[]>(APIURL + Endpoints.COR.Users.Get_AllUsers))
     }
 
     async impersonate() {
@@ -59,7 +59,7 @@ export class ImpersonationMenu {
         var input = {
             targetUser: this.targetID
         } as ImpersonateInput;
-        var c = await firstValueFrom(this.http.post<AuthenticationOutput>(APIURL + Endpoints.Core.Authentication.Post_Impersonate, input))
+        var c = await firstValueFrom(this.http.post<AuthenticationOutput>(APIURL + Endpoints.COR.Authentication.Post_Impersonate, input));
         if (c.jwtToken != '') {
             localStorage.removeItem('perms');
             const helper = new JwtHelperService();
