@@ -4,7 +4,7 @@ This is a general template, mostly for myself, that i use for general projects.
 
 The tech-stack is:
 * Database: SQL Server 2022 using TSQL
-* API:      ASP.NET Web API using .NET 9
+* API:      ASP.NET Web API using .NET 10
 * Frontend: Angular 23 project using PrimeNG
 
 Each folder for Database, API and Frontend each have a small readme for more info regarding the template.
