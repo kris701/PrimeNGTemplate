@@ -1,0 +1,12 @@
+name: primengtemplate
+services:
+    azure-sql-edge:
+        cap_add:
+            - SYS_PTRACE
+        environment:
+            - ACCEPT_EULA=1
+            - MSSQL_SA_PASSWORD=yourStrong(!)Password
+        ports:
+            - 2033:1433
+        container_name: sql-server
+        image: mcr.microsoft.com/azure-sql-edge

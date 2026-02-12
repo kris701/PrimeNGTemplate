@@ -10,3 +10,9 @@ The tech-stack is:
 Each folder for Database, API and Frontend each have a small readme for more info regarding the template.
 
 The project just consists of a database with a login and user system, an API to support it, and a frontend where you can log in and create users.
+
+## Usage
+
+You must have a database running for the API to work.
+You can start a SQL server database by running the `docker-compose` file.
+Afterwards you can run the API in Visual Studio.
