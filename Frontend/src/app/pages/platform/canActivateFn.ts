@@ -7,10 +7,7 @@ import { JWTTokenHelpers } from './helpers/jwtTokenHelpers';
 export function canActivate(permissionName: string): CanActivateFn {
     return (ars: ActivatedRouteSnapshot, rss: RouterStateSnapshot) => {
         const router = inject(Router);
-        if (!JWTTokenHelpers.IsTokenSet() || JWTTokenHelpers.IsExpired()) {
-            sessionStorage.setItem("redirectTo", rss.url);
-            return router.createUrlTree(['/platform/auth']);
-        }
+        if (!JWTTokenHelpers.IsTokenSet() || JWTTokenHelpers.IsExpired()) return router.createUrlTree(['/platform/auth'], { queryParams: { redirect: rss.url } });
         if (PermissionHelpers.HasPermission(permissionName)) return true;
         return router.createUrlTree(['/notfound']);
     };

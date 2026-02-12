@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11506.43 insiders
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeNGTemplate.API", "API\PrimeNGTemplate.API\PrimeNGTemplate.API.csproj", "{F0B6B6EA-F843-4930-9660-6403390A64FF}"
 EndProject
@@ -19,14 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{D8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{A67D6F9B-BE7B-4304-9E24-07CE99B895FD}"
 	ProjectSection(SolutionItems) = preProject
+		Frontend\src\globals-release.ts = Frontend\src\globals-release.ts
 		Frontend\readme.md = Frontend\readme.md
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PrimeNGTemplate.Database", "Database\PrimeNGTemplate.Database\PrimeNGTemplate.Database.sqlproj", "{DD9EC741-711C-4F91-92E1-C21154C9A77A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeNGTemplate.Plugins.Core", "API\Plugins\Core\PrimeNGTemplate.Plugins.Core\PrimeNGTemplate.Plugins.Core.csproj", "{A4389E70-186B-4354-BD98-D0AF0268A9D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeNGTemplate.Plugins.COR", "API\Plugins\COR\PrimeNGTemplate.Plugins.COR\PrimeNGTemplate.Plugins.COR.csproj", "{A4389E70-186B-4354-BD98-D0AF0268A9D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5F032695-6ACA-4EF5-9B15-F4C9E876C789}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "COR", "COR", "{5F032695-6ACA-4EF5-9B15-F4C9E876C789}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeNGTemplate.API.Endpoints", "API\PrimeNGTemplate.API.Endpoints\PrimeNGTemplate.API.Endpoints.csproj", "{C58D282E-DADA-40BA-9DC6-CE5A0882B8B3}"
 EndProject

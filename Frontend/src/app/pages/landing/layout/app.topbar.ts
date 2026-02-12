@@ -1,41 +1,29 @@
-import { transition } from '@angular/animations';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
-import { LayoutService } from '../../../layout/services/layout.service';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { TagModule } from 'primeng/tag';
-import { AppConfigurator } from '../../../layout/app.configurator';
 import { ButtonModule } from 'primeng/button';
-import { PopoverModule } from 'primeng/popover';
 import { JWTTokenHelpers } from '../../platform/helpers/jwtTokenHelpers';
+import { LayoutService } from '../../../services/layoutService';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, OverlayBadgeModule, TagModule, AppConfigurator, ButtonModule, PopoverModule],
-    template: ` <div class="layout-topbar" style="background:transparent">
-        <div class="flex-grow"></div>
-
-        <div class="flex flex-row gap-2">
-            <p-button (click)="confpop.toggle($event)" icon="pi pi-palette" text severity="contrast">
-                <p-popover #confpop>
-                    <div class="w-72">
-                        <app-configurator [hidden]="!showAdvancedThemeControls" />
-                    </div>
-                </p-popover>
-            </p-button>
-
-            <p-button (click)="toggleDarkMode()" [icon]="layoutService.isDarkTheme() ? 'pi pi-moon' : 'pi pi-sun'" text severity="contrast" />
-
-            <p-button [label]="getLoginText()" [icon]="getLoginIcon()" (click)="doLoginAction()" raised rounded></p-button>
+    imports: [RouterModule, CommonModule, StyleClassModule, OverlayBadgeModule, TagModule, ButtonModule],
+    template: ` <div class="layout-topbar justify-between" style="background:transparent">
+        <div class="items-center grow justify-between flex absolute static w-full left-0 top-0 p-2 pr-8 gap-2">
+            <div class="flex flex-grow"></div>
+            <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
+                <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.state.isDarkMode, 'pi-sun': !layoutService.state.isDarkMode }"></i>
+            </button>
+            <p-button pRipple [label]="getLoginText()" [icon]="getLoginIcon()" (click)="doLoginAction()" raised rounded></p-button>
         </div>
     </div>`
 })
 export class AppTopbar {
     localStorage = localStorage;
-    showAdvancedThemeControls = localStorage.getItem('showAdvancedThemeControls');
 
     constructor(
         public layoutService: LayoutService,
@@ -43,7 +31,7 @@ export class AppTopbar {
     ) {}
 
     toggleDarkMode() {
-        this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+        this.layoutService.ToggleDarkMode();
     }
 
     doLoginAction() {
@@ -54,8 +42,8 @@ export class AppTopbar {
 
     getLoginText(): string {
         if (this.router.url.endsWith('/platform/auth')) return 'Return';
-        if (JWTTokenHelpers.IsTokenSet()) return 'Enter Platform';
-        return 'Platform';
+        if (JWTTokenHelpers.IsTokenSet()) return 'Enter CargoBI';
+        return 'CargoBI';
     }
 
     getLoginIcon(): string {

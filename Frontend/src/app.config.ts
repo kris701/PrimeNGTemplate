@@ -1,23 +1,34 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
+import { definePreset } from '@primeng/themes';
+import * as Theme from "./theme.json";
+import { LayoutService } from './app/services/layoutService';
+
+const CBIPreset = definePreset(Aura, Theme);
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation(), withViewTransitions({ skipInitialTransition: true })),
+        provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation(), withViewTransitions()),
         provideAnimationsAsync(),
         MessageService,
         ConfirmationService,
         providePrimeNG({
+            ripple: false,
             theme: {
-                preset: Aura,
-                options: { darkModeSelector: '.dark' }
-            },
-            ripple: false
-        })
+                preset: CBIPreset,
+                options: {
+                    darkModeSelector: '.dark'
+                }
+            }
+        }),
+        provideMonacoEditor(),
+        provideZoneChangeDetection(),
+        LayoutService
     ]
 };

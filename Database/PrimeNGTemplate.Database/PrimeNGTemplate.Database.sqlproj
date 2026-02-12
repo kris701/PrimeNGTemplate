@@ -56,41 +56,41 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Core" />
-    <Folder Include="Core\Schemas" />
-    <Folder Include="Core\Tables" />
-    <Folder Include="Core\Programmability" />
-    <Folder Include="Global" />
-    <Folder Include="Global\Programmability" />
-    <Folder Include="Global\Programmability\Types" />
-    <Folder Include="Global\Schema" />
-    <Folder Include="Core\Programmability\Stored Procedures" />
-    <Folder Include="Core\Programmability\Stored Procedures\Authentication" />
-    <Folder Include="Core\Programmability\Stored Procedures\Users" />
-    <Folder Include="Core\Programmability\Stored Procedures\Permissions" />
-    <Folder Include="Core\Programmability\Functions" />
+    <Folder Include="COR" />
+    <Folder Include="COR\Schemas" />
+    <Folder Include="COR\Tables" />
+    <Folder Include="COR\Programmability" />
+    <Folder Include="GLB" />
+    <Folder Include="GLB\Programmability" />
+    <Folder Include="GLB\Programmability\Types" />
+    <Folder Include="GLB\Schema" />
+    <Folder Include="COR\Programmability\Stored Procedures" />
+    <Folder Include="COR\Programmability\Stored Procedures\Authentication" />
+    <Folder Include="COR\Programmability\Stored Procedures\Users" />
+    <Folder Include="COR\Programmability\Stored Procedures\Permissions" />
+    <Folder Include="COR\Programmability\Functions" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Core\Schemas\CoreSchema.sql" />
-    <Build Include="Core\Tables\Users.sql" />
-    <Build Include="Core\Tables\UserPermissions.sql" />
-    <Build Include="Core\Tables\Permissions.sql" />
-    <Build Include="Global\Programmability\Types\GuidListType.sql" />
-    <Build Include="Global\Schema\GlobalSchema.sql" />
-    <Build Include="Global\Programmability\Types\StringListType.sql" />
+    <Build Include="COR\Schemas\CORSchema.sql" />
+    <Build Include="COR\Tables\Users.sql" />
+    <Build Include="COR\Tables\UserPermissions.sql" />
+    <Build Include="COR\Tables\Permissions.sql" />
+    <Build Include="GLB\Programmability\Types\GuidListType.sql" />
+    <Build Include="GLB\Schema\GlbSchemaSchema.sql" />
+    <Build Include="GLB\Programmability\Types\StringListType.sql" />
     <PostDeploy Include="postDeploy.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_AuthenticateByUsername.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_Impersonate.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_UpdatePassword.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\SP_AddUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\SP_DeleteUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\SP_GetAllUsers.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\SP_GetUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\SP_UpdateUser.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_AddPermissionIfNotExist.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_GetAllPermissions.sql" />
-    <Build Include="Core\Programmability\Functions\IsStaff.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_AuthenticateByUserID.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Authentication\AuthenticateByUsername.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Authentication\Impersonate.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Authentication\UpdatePassword.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Users\AddUser.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Users\DeleteUser.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Users\GetAllUsers.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Users\GetUser.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Users\UpdateUser.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Permissions\AddPermissionIfNotExist.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Permissions\GetAllPermissions.sql" />
+    <Build Include="COR\Programmability\Functions\IsStaff.sql" />
+    <Build Include="COR\Programmability\Stored Procedures\Authentication\AuthenticateByUserID.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PrimeNGTemplate.Database-Test.publish.xml" />

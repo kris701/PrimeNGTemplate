@@ -1,5 +1,5 @@
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { JWTTokenModel } from "../../../models/Core/jWTTokenModel";
+import { JWTTokenModel } from "../../../models/COR/jWTTokenModel";
 
 export class JWTTokenHelpers
 {

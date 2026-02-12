@@ -1,2 +1,2 @@
-export const APIURL = "https://localhost:64939/"
+export const APIURL = "https://localhost:7273/"
 export const VersionTag = "(DEBUG)"
