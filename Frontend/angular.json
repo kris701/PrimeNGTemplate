@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "cargobi": {
+        "primengtemplate": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:application",
                     "options": {
-                        "outputPath": "../../Output/Clients/Web",
+                        "outputPath": "../Output/Frontend",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": [
@@ -33,11 +33,6 @@
                             {
                                 "glob": "src/assets/images/**",
                                 "input": "."
-                            },
-                            {
-                                "glob": "**/*",
-                                "input": "node_modules/monaco-editor",
-                                "output": "/assets/monaco/"
                             }
                         ],
                         "styles": [
@@ -85,10 +80,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "cargobi:build:production"
+                            "buildTarget": "primengtemplate:build:production"
                         },
                         "development": {
-                            "buildTarget": "cargobi:build:development"
+                            "buildTarget": "primengtemplate:build:development"
                         }
                     },
                     "defaultConfiguration": "development",

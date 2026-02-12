@@ -5,12 +5,11 @@ import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 import { definePreset } from '@primeng/themes';
 import * as Theme from "./theme.json";
 import { LayoutService } from './app/services/layoutService';
 
-const CBIPreset = definePreset(Aura, Theme);
+const ThemePreset = definePreset(Aura, Theme);
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -21,13 +20,12 @@ export const appConfig: ApplicationConfig = {
         providePrimeNG({
             ripple: false,
             theme: {
-                preset: CBIPreset,
+                preset: ThemePreset,
                 options: {
                     darkModeSelector: '.dark'
                 }
             }
         }),
-        provideMonacoEditor(),
         provideZoneChangeDetection(),
         LayoutService
     ]

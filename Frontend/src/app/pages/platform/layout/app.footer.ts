@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
     imports: [TagModule, CommonModule],
     selector: 'app-footer',
     template: `<div class="layout-footer">
-        CargoBI © 2026
+        PrimeNGTemplate © 2026
         <p-tag severity="warn" value="Impersonating user" *ngIf="isImpersonating" />
     </div>`,
     styles: `

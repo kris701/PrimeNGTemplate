@@ -17,9 +17,6 @@ import { APIURL } from '../../../../../globals';
 import { AuthenticateInput } from '../../../../models/COR/authenticateInput';
 import { AuthenticationOutput } from '../../../../models/COR/authenticationOutput';
 import { JWTTokenModel } from '../../../../models/COR/jWTTokenModel';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { BrowserCacheLocation, IPublicClientApplication, PopupRequest, PublicClientApplication } from '@azure/msal-browser';
-import { AuthenticateADInput } from '../../../../models/COR/authenticateADInput';
 import { MessageModule } from 'primeng/message';
 import { FloatPasswordInput } from '../../../../common/components/floatpasswordinput';
 import { FloatTextInput } from '../../../../common/components/floattextinput';
@@ -28,13 +25,6 @@ import { LayoutService } from '../../../../services/layoutService';
 @Component({
     selector: 'app-login',
     standalone: true,
-    providers: [
-        {
-            provide: MSAL_INSTANCE,
-            useFactory: MSALInstanceFactory
-        },
-        MsalService
-    ],
     imports: [
         ButtonModule,
         CheckboxModule,
@@ -62,36 +52,19 @@ import { LayoutService } from '../../../../services/layoutService';
                             } @else {
                                 <img class="mb-2 w-64 shrink-0 mx-auto" src="src/assets/images/logo_large_transparant_inv.png" />
                             }
-                            <div class="text-3xl font-medium mb-4">Welcome to CargoBI!</div>
+                            <div class="text-3xl font-medium mb-4">Welcome to PrimeNGTemplate!</div>
                         </div>
 
-                        @if (loginOption == LoginOptions.None) {
-                            <div class="flex flex-col gap-2">
-                                <label class="text-center">Select a sign in method</label>
-                                <p-button label="Username and Password" icon="pi pi-key" styleClass="w-full" severity="secondary" (click)="loginOption = LoginOptions.Default"></p-button>
-                                <p-button label="Azure AD" icon="pi pi-microsoft" styleClass="w-full" severity="secondary" (click)="loginOption = LoginOptions.AzureAD"></p-button>
-                            </div>
-                        } @else if (loginOption == LoginOptions.Default) {
-                            <div class="flex flex-col gap-2">
-                                <p-button icon="pi pi-arrow-left" label="Back" severity="secondary" fluid (click)="loginOption = LoginOptions.None"></p-button>
-                                <label class="text-center">Username and Password</label>
-                                <label class="text-center" *ngIf="loginWasInvalid" [style]="{ color: 'red' }">Username or Password is invalid!</label>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-center">Username and Password</label>
+                            <label class="text-center" *ngIf="loginWasInvalid" [style]="{ color: 'red' }">Username or Password is invalid!</label>
 
-                                <app-floattextinput label="Username or Email" [(value)]="loginName" [autoFocus]="true" />
+                            <app-floattextinput label="Username or Email" [(value)]="loginName" [autoFocus]="true" />
 
-                                <app-floatpasswordinput label="Password" [(value)]="password" (onEnter)="doDefaultLogin()" />
+                            <app-floatpasswordinput label="Password" [(value)]="password" (onEnter)="doDefaultLogin()" />
 
-                                <p-button label="Sign In" styleClass="w-full" (click)="doDefaultLogin()"></p-button>
-                                <p-button label="Reset Password" severity="secondary" styleClass="w-full" (click)="doResetPassword()"></p-button>
-                            </div>
-                        } @else if (loginOption == LoginOptions.AzureAD) {
-                            <div class="flex flex-col gap-2">
-                                <p-button icon="pi pi-arrow-left" label="Back" severity="secondary" fluid (click)="loginOption = LoginOptions.None"></p-button>
-                                <label class="text-center">Microsoft Azure Active Directory</label>
-                                <label class="text-center" *ngIf="loginWasInvalid" [style]="{ color: 'red' }">Error during login!</label>
-                                <p-button icon="pi pi-microsoft" label="Login" fluid (click)="doAzureADLogin()"></p-button>
-                            </div>
-                        }
+                            <p-button label="Sign In" styleClass="w-full" (click)="doDefaultLogin()"></p-button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -114,12 +87,9 @@ export class Login {
     constructor(
         private router: Router,
         private http: HttpClient,
-        public layoutService: LayoutService,
-        private authService: MsalService
+        public layoutService: LayoutService
     ) {}
 
-    LoginOptions = LoginOptions;
-    loginOption: LoginOptions = LoginOptions.None;
     loginName: string = '';
     password: string = '';
     isLoggingIn: boolean = false;
@@ -131,7 +101,6 @@ export class Login {
             localStorage.removeItem('perms');
             localStorage.removeItem('impersonating');
         }
-        await this.authService.initialize();
     }
 
     doDefaultLogin() {
@@ -143,30 +112,6 @@ export class Login {
         } as AuthenticateInput;
         this.http.post<AuthenticationOutput>(APIURL + Endpoints.COR.Authentication.Post_Authenticate, input).subscribe(
             (c) => this.processAuthResult(c),
-            (e) => {
-                this.isLoggingIn = false;
-                this.loginWasInvalid = true;
-            }
-        );
-    }
-
-    doAzureADLogin() {
-        this.isLoggingIn = true;
-        this.loginWasInvalid = false;
-        this.authService.loginPopup({ prompt: 'select_account' } as PopupRequest).subscribe(
-            async (r) => {
-                var input = {
-                    username: r.account.username,
-                    token: r.idToken
-                } as AuthenticateADInput;
-                this.http.post<AuthenticationOutput>(APIURL + Endpoints.COR.Authentication.Post_Authenticate_AD, input).subscribe(
-                    (c) => this.processAuthResult(c),
-                    (e) => {
-                        this.isLoggingIn = false;
-                        this.loginWasInvalid = true;
-                    }
-                );
-            },
             (e) => {
                 this.isLoggingIn = false;
                 this.loginWasInvalid = true;
@@ -196,31 +141,4 @@ export class Login {
             } else window.location.replace('/platform');
         }
     }
-
-    doResetPassword() {
-        this.router.navigate(['/platform/auth/resetpassword']);
-    }
-}
-
-enum LoginOptions {
-    None,
-    Default,
-    AzureAD
-}
-
-function MSALInstanceFactory(): IPublicClientApplication {
-    return new PublicClientApplication({
-        auth: {
-            clientId: 'd3603447-86de-4713-8e9c-de308f4eafb9',
-            authority: 'https://login.microsoftonline.com/bcb93569-efdf-4b82-83c2-71e84c321f00/v2.0',
-            redirectUri: window.location.href,
-            postLogoutRedirectUri: '/'
-        },
-        cache: {
-            cacheLocation: BrowserCacheLocation.SessionStorage
-        },
-        system: {
-            allowPlatformBroker: false // Disables WAM Broker
-        }
-    });
 }

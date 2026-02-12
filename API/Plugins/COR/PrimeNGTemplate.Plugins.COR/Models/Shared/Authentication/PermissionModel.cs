@@ -1,7 +1,7 @@
 ﻿using DatabaseSharp.Attributes;
 using System.Text.Json.Serialization;
 
-namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication
+namespace PrimeNGTemplate.Plugins.COR.Models.Shared.Authentication
 {
 	public class PermissionModel
 	{

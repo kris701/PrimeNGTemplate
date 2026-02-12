@@ -1,10 +1,10 @@
 ﻿using DatabaseSharp;
 using PrimeNGTemplate.API.Tools;
 using PrimeNGTemplate.API.Tools.Serialization;
-using PrimeNGTemplate.Plugins.Core.Helpers;
-using PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication;
+using PrimeNGTemplate.Plugins.COR.Helpers;
+using PrimeNGTemplate.Plugins.COR.Models.Shared.Authentication;
 
-namespace PrimeNGTemplate.Plugins.Core.DatabaseInterface.Authentication
+namespace PrimeNGTemplate.Plugins.COR.DatabaseInterface.Authentication
 {
 	public class UpdatePasswordModel(IDBClient client) :
 		BaseDBModel<UpdatePasswordInput, EmptyModel>(client)

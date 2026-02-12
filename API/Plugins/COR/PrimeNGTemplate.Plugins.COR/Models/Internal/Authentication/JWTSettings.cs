@@ -1,4 +1,4 @@
-﻿namespace PrimeNGTemplate.Plugins.Core.Models.Internal.Authentication
+﻿namespace PrimeNGTemplate.Plugins.COR.Models.Internal.Authentication
 {
 	public class JWTSettings
 	{

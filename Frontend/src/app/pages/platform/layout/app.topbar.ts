@@ -30,7 +30,7 @@ import { LayoutService } from '../../../services/layoutService';
                 <img src="src/assets/images/logo_small_transparant_inv.png" [style]="{ height: '45px' }" />
             }
             @if (layoutService.state.isDesktop) {
-                <span>CargoBI</span>
+                <span>PrimeNG Template</span>
             }
         </a>
 
@@ -108,7 +108,7 @@ export class AppTopbar {
     JWTTokenHelpers = JWTTokenHelpers;
 
     isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
-    canImpersonatePerm: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_Impersonate);
+    canImpersonatePerm: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_User_Impersonate);
     canEditProfile: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_Users_Own_Write);
 
     constructor(

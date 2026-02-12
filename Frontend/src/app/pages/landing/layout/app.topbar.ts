@@ -42,8 +42,8 @@ export class AppTopbar {
 
     getLoginText(): string {
         if (this.router.url.endsWith('/platform/auth')) return 'Return';
-        if (JWTTokenHelpers.IsTokenSet()) return 'Enter CargoBI';
-        return 'CargoBI';
+        if (JWTTokenHelpers.IsTokenSet()) return 'Enter Platform';
+        return 'Platform';
     }
 
     getLoginIcon(): string {

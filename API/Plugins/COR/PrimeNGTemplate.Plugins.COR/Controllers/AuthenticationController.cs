@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PrimeNGTemplate.API.Tools.Helpers;
-using PrimeNGTemplate.Plugins.Core.DatabaseInterface.Authentication;
-using PrimeNGTemplate.Plugins.Core.Models.Internal.Authentication;
-using PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication;
+using PrimeNGTemplate.Plugins.COR.DatabaseInterface.Authentication;
+using PrimeNGTemplate.Plugins.COR.Models.Internal.Authentication;
+using PrimeNGTemplate.Plugins.COR.Models.Shared.Authentication;
 
-namespace PrimeNGTemplate.Plugins.Core.Controllers
+namespace PrimeNGTemplate.Plugins.COR.Controllers
 {
 	/// <summary>
 	/// Controller endpoints for authentication
@@ -20,7 +20,7 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		private readonly IDBClient _dbClient;
 		private readonly JWTSettings _settings;
 
-		public AuthenticationController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient, JWTSettings settings)
+		public AuthenticationController(IDBClient dbClient, JWTSettings settings)
 		{
 			_dbClient = dbClient;
 			_settings = settings;
@@ -33,7 +33,7 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		/// <returns></returns>
 		/// <response code="200">If login was successful.</response>
 		[AllowAnonymous]
-		[HttpPost(Endpoints.Core.Authentication.Post_Authenticate)]
+		[HttpPost(Endpoints.COR.Authentication.Post_Authenticate)]
 		public async Task<IActionResult> Post_Authenticate([FromBody] AuthenticateInput inputModel)
 		{
 			var model = new AuthenticateModel(_dbClient, _settings);
@@ -46,8 +46,8 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		/// <param name="inputModel"></param>
 		/// <returns></returns>
 		/// <response code="200">Resulting JWT token for the user.</response>
-		[HttpPost(Endpoints.Core.Authentication.Post_Impersonate)]
-		[Authorize(Roles = PermissionsTable.Core_User_Impersonate)]
+		[HttpPost(Endpoints.COR.Authentication.Post_Impersonate)]
+		[Authorize(Roles = PermissionsTable.COR_User_Impersonate)]
 		public async Task<IActionResult> Post_Impersonate([FromBody] ImpersonateInput inputModel)
 		{
 			User.SetExecID(inputModel);
@@ -62,8 +62,8 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		/// <returns></returns>
 		/// <exception cref="Exception"></exception>
 		/// <response code="200">If password change was successful.</response>
-		[HttpPost(Endpoints.Core.Authentication.Post_UpdatePassword)]
-		[Authorize(Roles = PermissionsTable.Core_User_ChangePassword)]
+		[HttpPost(Endpoints.COR.Authentication.Post_UpdatePassword)]
+		[Authorize(Roles = PermissionsTable.COR_Users_Own_Write)]
 		public async Task<IActionResult> Post_UpdatePassword([FromBody] UpdatePasswordInput inputModel)
 		{
 			User.SetExecID(inputModel);

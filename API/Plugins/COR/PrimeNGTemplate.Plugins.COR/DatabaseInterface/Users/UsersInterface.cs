@@ -1,10 +1,10 @@
 ﻿using DatabaseSharp;
 using DatabaseSharp.Tools;
 using PrimeNGTemplate.API.Tools;
-using PrimeNGTemplate.Plugins.Core.Helpers;
-using PrimeNGTemplate.Plugins.Core.Models.Shared.Users;
+using PrimeNGTemplate.Plugins.COR.Helpers;
+using PrimeNGTemplate.Plugins.COR.Models.Shared.Users;
 
-namespace PrimeNGTemplate.Plugins.Core.DatabaseInterface.Users
+namespace PrimeNGTemplate.Plugins.COR.DatabaseInterface.Users
 {
 	public class UsersInterface : BaseCRUDSerializerModel<AddUserInput, EmptyModel, UserModel, ListUserModel, GetModel, DeleteModel, EmptyModel>
 	{

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PrimeNGTemplate.API.Tools;
 using PrimeNGTemplate.API.Tools.Helpers;
-using PrimeNGTemplate.Plugins.Core.DatabaseInterface.Permissions;
+using PrimeNGTemplate.Plugins.COR.DatabaseInterface.Permissions;
 
-namespace PrimeNGTemplate.Plugins.Core.Controllers
+namespace PrimeNGTemplate.Plugins.COR.Controllers
 {
 	/// <summary>
 	/// Controller endpoints for permissions
@@ -18,7 +18,7 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 	{
 		private readonly IDBClient _dbClient;
 
-		public PermissionsController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient)
+		public PermissionsController(IDBClient dbClient)
 		{
 			_dbClient = dbClient;
 		}
@@ -29,8 +29,8 @@ namespace PrimeNGTemplate.Plugins.Core.Controllers
 		/// <returns></returns>
 		/// <exception cref="Exception"></exception>
 		/// <response code="200">A list of all permissions and descriptions½.</response>
-		[HttpGet(Endpoints.Core.Permissions.Get_AllPermissions)]
-		[Authorize(Roles = PermissionsTable.Core_Permission_Read)]
+		[HttpGet(Endpoints.COR.Permissions.Get_AllPermissions)]
+		[Authorize(Roles = PermissionsTable.COR_Permission_Read)]
 		public async Task<IActionResult> Get_AllPermissions()
 		{
 			var inputModel = new EmptyModel();

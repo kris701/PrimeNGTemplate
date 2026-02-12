@@ -34,7 +34,6 @@ import { PermissionHelpers } from '../../../helpers/permissionHelpers';
 import { PermissionsTable } from '../../../../../../PermissionsTable';
 import { UserInterface } from '../../../interfaces/usersinterface';
 import { FloatPasswordInput } from "../../../../../common/components/floatpasswordinput";
-import { ListGlbStaffModel } from '../../../../../models/CWO/listGlbStaffModel';
 import { FloatSelect } from "../../../../../common/components/floatselect";
 
 @Component({
@@ -62,8 +61,7 @@ import { FloatSelect } from "../../../../../common/components/floatselect";
     TableBoolRow,
     FloatTable,
     FloatDialog,
-    FloatPasswordInput,
-    FloatSelect
+    FloatPasswordInput
 ],
     template: `
         <app-floattable [values]="allItems" stateKey="core-users-session" [isLoading]="isLoading" [showAdd]="canWrite" (onAddItem)="showAddItem()" (onLoadItems)="loadItems()" (onShowItem)="showEditItem($event)">
@@ -106,9 +104,6 @@ import { FloatSelect } from "../../../../../common/components/floatselect";
                         <app-floattextinput [(value)]="currentItem.firstName" [disabled]="!canWrite" label="First Name" icon="pi-pencil" />
                         <app-floattextinput [(value)]="currentItem.lastName" [disabled]="!canWrite" label="Last Name" icon="pi-pencil" />
                         <app-floattextinput [(value)]="currentItem.email" [disabled]="!canWrite" label="E-Mail" icon="pi-envelope" />
-                        @if(canReadCWUsers){
-                            <app-floatselect [(selected)]="currentItem.cwUserID" [showClear]="true" [options]="allCWUsers" optionValue="id" optionLabel="loginName" [disabled]="!canWrite" label="Linked CargoWise User"/>
-                        }
                     </div>
                 </p-fieldset>
 
@@ -134,9 +129,6 @@ export class UserEditor extends BaseCRUDInterface {
     override canRead: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_Users_Read);
     override canWrite: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_Users_Write);
     canReadPermissions: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_Permission_Read);
-    canReadCWUsers: boolean = PermissionHelpers.HasPermission(PermissionsTable.CWO_GlbStaff_Read);
-
-    allCWUsers : ListGlbStaffModel[] = [];
 
     override getAllEndpoint: string = Endpoints.COR.Users.Get_AllUsers;
     override getEndpoint: string = Endpoints.COR.Users.Get_User;
@@ -154,8 +146,7 @@ export class UserEditor extends BaseCRUDInterface {
             lastName: 'User',
             email: 'None',
             isActive: true,
-            isStaff: false,
-            cwUserID: null
+            isStaff: false
         } as UserModel;
     }
 
@@ -176,9 +167,6 @@ export class UserEditor extends BaseCRUDInterface {
         this.isLoading = true;
         if (this.canReadPermissions) {
             this.permissionsList = await firstValueFrom(this.http.get<PermissionModel[]>(APIURL + Endpoints.COR.Permissions.Get_AllPermissions));
-        }
-        if (this.canReadCWUsers) {
-            this.allCWUsers = await firstValueFrom(this.http.get<ListGlbStaffModel[]>(APIURL + Endpoints.CWO.Get_AllGlobalStaff));
         }
         if (this.canRead) {
             this.allItems = await firstValueFrom(this.http.get<UserModel[]>(APIURL + Endpoints.COR.Users.Get_AllUsers));

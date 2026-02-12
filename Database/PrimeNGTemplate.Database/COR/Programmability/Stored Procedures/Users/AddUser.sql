@@ -14,6 +14,6 @@ SELECT NEWID(),
        *
 FROM   @Permissions;
 
-EXECUTE [COR].[SP_GetUser] @ExecID, @ID;
+EXECUTE [COR].[GetUser] @ExecID, @ID;
 
 COMMIT TRANSACTION;

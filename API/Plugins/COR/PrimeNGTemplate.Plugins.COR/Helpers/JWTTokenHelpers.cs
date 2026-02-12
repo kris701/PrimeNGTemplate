@@ -1,9 +1,9 @@
 ﻿using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using PrimeNGTemplate.Plugins.Core.Models.Shared.Users;
+using PrimeNGTemplate.Plugins.COR.Models.Shared.Users;
 using System.Text;
 
-namespace PrimeNGTemplate.Plugins.Core.Helpers
+namespace PrimeNGTemplate.Plugins.COR.Helpers
 {
 	public static class JWTTokenHelpers
 	{

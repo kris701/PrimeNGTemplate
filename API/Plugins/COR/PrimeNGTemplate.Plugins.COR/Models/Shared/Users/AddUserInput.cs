@@ -1,7 +1,7 @@
 ﻿using PrimeNGTemplate.API.Tools;
 using System.ComponentModel.DataAnnotations;
 
-namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
+namespace PrimeNGTemplate.Plugins.COR.Models.Shared.Users
 {
 	public class AddUserInput : BaseExecIDModel
 	{

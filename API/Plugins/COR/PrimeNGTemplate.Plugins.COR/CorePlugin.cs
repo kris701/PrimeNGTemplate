@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using PrimeNGTemplate.Plugins.Core.Models.Internal.Authentication;
-using PrimeNGTemplate.Plugins.Core.Services;
+using PrimeNGTemplate.Plugins.COR.Models.Internal.Authentication;
+using PrimeNGTemplate.Plugins.COR.Services;
 using System.Reflection;
 using System.Text;
+using Uni.API.Helpers;
 using Uni.API.Models;
 
-namespace PrimeNGTemplate.Plugins.Core
+namespace PrimeNGTemplate.Plugins.COR
 {
 	public class CorePlugin : BaseUniAPIPlugin
 	{
-		public const string DBClientKeyName = "Core_ConnectionString";
-
 		private string _connectionString = "";
 		private string _jwtSecret = "";
 		private int _jwtLifetime = -1;
@@ -30,9 +29,9 @@ namespace PrimeNGTemplate.Plugins.Core
 
 		public override void ConfigureConfiguration(IConfiguration configuration)
 		{
-			_connectionString = GetSectionValue(configuration, "DatabaseConnectionString");
-			_jwtSecret = GetSectionValue(configuration, "JWTSecret");
-			_jwtLifetime = int.Parse(GetSectionValue(configuration, "JWTLifetime"));
+			_connectionString = configuration.GetSectionValue<string>("COR", "DatabaseConnectionString");
+			_jwtSecret = configuration.GetSectionValue<string>("COR", "JWTSecret");
+			_jwtLifetime = configuration.GetSectionValue<int>("COR", "JWTLifetime");
 
 			base.ConfigureConfiguration(configuration);
 		}
@@ -65,7 +64,7 @@ namespace PrimeNGTemplate.Plugins.Core
 				c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 			});
 
-			services.AddKeyedSingleton<IDBClient>(DBClientKeyName, new DBClient(_connectionString));
+			services.AddSingleton<IDBClient>(new DBClient(_connectionString));
 			services.AddHostedService<PermissionBackgroundService>();
 
 			base.ConfigureServices(services);

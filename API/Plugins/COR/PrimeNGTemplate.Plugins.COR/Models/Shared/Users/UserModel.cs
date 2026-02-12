@@ -3,7 +3,7 @@ using PrimeNGTemplate.API.Tools;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
+namespace PrimeNGTemplate.Plugins.COR.Models.Shared.Users
 {
 	public class UserModel : BaseExecIDModel
 	{

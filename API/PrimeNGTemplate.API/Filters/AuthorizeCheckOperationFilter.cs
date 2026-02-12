@@ -2,7 +2,7 @@
 using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace PrimeNGTemplate.Plugins.Core.Filters
+namespace PrimeNGTemplate.API.Filters
 {
 	public class AuthorizeCheckOperationFilter : IOperationFilter
 	{

@@ -1,12 +1,12 @@
 ﻿using DatabaseSharp;
 using PrimeNGTemplate.API.Tools;
 using PrimeNGTemplate.API.Tools.Serialization;
-using PrimeNGTemplate.Plugins.Core.Helpers;
-using PrimeNGTemplate.Plugins.Core.Models.Internal.Authentication;
-using PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication;
-using PrimeNGTemplate.Plugins.Core.Models.Shared.Users;
+using PrimeNGTemplate.Plugins.COR.Helpers;
+using PrimeNGTemplate.Plugins.COR.Models.Internal.Authentication;
+using PrimeNGTemplate.Plugins.COR.Models.Shared.Authentication;
+using PrimeNGTemplate.Plugins.COR.Models.Shared.Users;
 
-namespace PrimeNGTemplate.Plugins.Core.DatabaseInterface.Authentication
+namespace PrimeNGTemplate.Plugins.COR.DatabaseInterface.Authentication
 {
 	public class AuthenticateModel(IDBClient client, JWTSettings settings) :
 		BaseDBModel<AuthenticateInput, AuthenticationOutput>(client)

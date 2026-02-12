@@ -1,1 +1,2 @@
-CREATE TYPE [GLB].[StringListType] AS TABLE( Value NVARCHAR(MAX) NOT NULL )
+CREATE TYPE [GLB].[StringListType] AS TABLE (
+    Value NVARCHAR (MAX) NOT NULL);

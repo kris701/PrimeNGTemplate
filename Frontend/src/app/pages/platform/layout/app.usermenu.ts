@@ -22,12 +22,9 @@ import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
 import { PermissionHelpers } from '../helpers/permissionHelpers';
 import { FieldsetModule } from 'primeng/fieldset';
 import { firstValueFrom } from 'rxjs';
-import { GenerateAPIKeyOutput } from '../../../models/COR/generateAPIKeyOutput';
-import { GenerateAPIKeyInput } from '../../../models/COR/generateAPIKeyInput';
 import { TextareaModule } from 'primeng/textarea';
 import { FloatTextInput } from '../../../common/components/floattextinput';
 import { FloatDatePicker } from '../../../common/components/floatdatepicker';
-import { FloatToggleSwitch } from '../../../common/components/floattoggleswitch';
 import { FloatPasswordInput } from "../../../common/components/floatpasswordinput";
 
 @Component({
@@ -47,7 +44,6 @@ import { FloatPasswordInput } from "../../../common/components/floatpasswordinpu
     ChipModule,
     FloatTextInput,
     FieldsetModule,
-    FloatDatePicker,
     TextareaModule,
     FloatPasswordInput
 ],
@@ -64,8 +60,8 @@ import { FloatPasswordInput } from "../../../common/components/floatpasswordinpu
                     </div>
                 </div>
             }
-            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="showChangePassword()" [style]="{ width: '100%' }" [hidden]="!canWriteSelf" />
-            <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="showEditProfile()" [style]="{ width: '100%' }" />
+            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="changePasswordVisible = true" [style]="{ width: '100%' }" [hidden]="!canWriteSelf" />
+            <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="editProfileVisible = true" [style]="{ width: '100%' }" />
             <p-button icon="pi pi-sign-out" label="Log Out" severity="danger" pTooltip="Log out and return to the login screen" (click)="logOut()" [disabled]="isImpersonating" [style]="{ width: '100%' }" />
         </div>
 
@@ -97,18 +93,6 @@ import { FloatPasswordInput } from "../../../common/components/floatpasswordinpu
                             <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWriteSelf" label="E-Mail" icon="pi-envelope" />
                         </div>
                     </p-fieldset>
-                    @if (canGenerateAPIKey){
-                        <p-fieldset legend="API Key">
-                            <div class="flex flex-col gap-2">
-                                <p>Generate a persistent API token for this user.</p>
-                                <app-floatdatepicker [(value)]="currentAPIKeyExpiresAt" label="Expires At"/>
-                                <p-button label="Generate" icon="pi pi-key" (click)="generateAPIKey()" class="w-full" fluid/>
-                                @if(currentAPIKey != ''){
-                                    <textarea pTextarea [autoResize]="true" [disabled]="true">{{currentAPIKey}}</textarea>
-                                }
-                            </div>
-                        </p-fieldset>
-                    }
                 }
                 @else {
                     <p>Error loading user...</p>
@@ -127,7 +111,6 @@ export class UserMenu {
     newPassword2: string = '';
 
     canWriteSelf: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_Users_Own_Write);
-    canGenerateAPIKey: boolean = PermissionHelpers.HasPermission(PermissionsTable.COR_APIKey_Write);
     isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
 
     editProfileVisible: boolean = false;
@@ -142,10 +125,8 @@ export class UserMenu {
         private service: MessageService
     ) {}
 
-    ngOnInit() {
-        this.http.get<UserModel>(APIURL + Endpoints.COR.Users.Get_User + '?ID=' + JWTTokenHelpers.GetUserID()).subscribe((r) => {
-            this.currentUser = r;
-        });
+    async ngOnInit() {
+        this.currentUser = await firstValueFrom(this.http.get<UserModel>(APIURL + Endpoints.COR.Users.Get_User + '?ID=' + JWTTokenHelpers.GetUserID()));
     }
 
     logOut() {
@@ -154,11 +135,7 @@ export class UserMenu {
         this.router.navigate(['/']);
     }
 
-    showChangePassword() {
-        this.changePasswordVisible = true;
-    }
-
-    changePassword() {
+    async changePassword() {
         if (this.newPassword1 != this.newPassword2) {
             alert('New passwords are not identical!');
             return;
@@ -168,25 +145,14 @@ export class UserMenu {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword1
         } as UpdatePasswordInput;
-        this.http.post<UpdatePasswordInput>(APIURL + Endpoints.COR.Authentication.Post_UpdatePassword, input).subscribe(() => {
-            this.router.navigate(['/platform/auth']);
-            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Password updated!' });
-        });
+        await firstValueFrom(this.http.post<UpdatePasswordInput>(APIURL + Endpoints.COR.Authentication.Post_UpdatePassword, input))
+        this.router.navigate(['/platform/auth']);
+        this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Password updated!' });
     }
 
-    showEditProfile() {
-        this.editProfileVisible = true;
-    }
-
-    updateUser() {
-        this.http.patch<UserModel>(APIURL + Endpoints.COR.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
-            this.editProfileVisible = false;
-            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Profile updated!' });
-        });
-    }
-
-    async generateAPIKey(){
-        var response = await firstValueFrom(this.http.post<GenerateAPIKeyOutput>(APIURL + Endpoints.COR.Authentication.Post_GenerateAPIKey, { expiresAt: this.currentAPIKeyExpiresAt.toISOString() } as GenerateAPIKeyInput));
-        this.currentAPIKey = response.token;
+    async updateUser() {
+        await firstValueFrom(this.http.patch<UserModel>(APIURL + Endpoints.COR.Users.Patch_UpdateUser, this.currentUser));
+        this.editProfileVisible = false;
+        this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Profile updated!' });
     }
 }

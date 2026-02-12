@@ -17,6 +17,7 @@ import { ImpersonateInput } from '../../../models/COR/impersonateInput';
 import { JWTTokenModel } from '../../../models/COR/jWTTokenModel';
 import { ListUserModel } from '../../../models/COR/listUserModel';
 import { FloatSelect } from '../../../common/components/floatselect';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-impersonationmenu',
@@ -42,41 +43,37 @@ export class ImpersonationMenu {
     ) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         if (this.isImpersonating()) return;
-        this.loadAllUsers();
+        await this.loadAllUsers();
     }
 
-    loadAllUsers(){
-        this.allUsers = []
-        this.http.get<ListUserModel[]>(APIURL + Endpoints.COR.Users.Get_AllUsers).subscribe(r => {
-            this.allUsers = r;
-        })
+    async loadAllUsers(){
+        this.allUsers = await firstValueFrom(this.http.get<ListUserModel[]>(APIURL + Endpoints.COR.Users.Get_AllUsers))
     }
 
-    impersonate() {
+    async impersonate() {
         if (this.targetID == null || this.targetID == '') return;
         var token = localStorage.getItem('jwtToken');
         if (token) localStorage.setItem('impersonating', token);
         var input = {
             targetUser: this.targetID
         } as ImpersonateInput;
-        this.http.post<AuthenticationOutput>(APIURL + Endpoints.COR.Authentication.Post_Impersonate, input).subscribe((c) => {
-            if (c.jwtToken != '') {
-                localStorage.removeItem('perms');
-                const helper = new JwtHelperService();
-                var result = helper.decodeToken<JWTTokenModel>(c.jwtToken);
-                if (!result) return;
-                if (result.role == null) result.role = [];
-                var permsStr = '';
-                result.role.forEach((p) => {
-                    permsStr += p + ';';
-                });
-                localStorage.setItem('perms', permsStr);
-                localStorage.setItem('jwtToken', c.jwtToken);
-                window.location.replace('/platform');
-            }
-        });
+        var c = await firstValueFrom(this.http.post<AuthenticationOutput>(APIURL + Endpoints.COR.Authentication.Post_Impersonate, input));
+        if (c.jwtToken != '') {
+            localStorage.removeItem('perms');
+            const helper = new JwtHelperService();
+            var result = helper.decodeToken<JWTTokenModel>(c.jwtToken);
+            if (!result) return;
+            if (result.role == null) result.role = [];
+            var permsStr = '';
+            result.role.forEach((p) => {
+                permsStr += p + ';';
+            });
+            localStorage.setItem('perms', permsStr);
+            localStorage.setItem('jwtToken', c.jwtToken);
+            window.location.replace('/platform');
+        }
     }
 
     stopImpersonate() {

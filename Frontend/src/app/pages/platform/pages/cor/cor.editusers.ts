@@ -13,7 +13,6 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { UserEditor } from './components/usereditor';
-import { CardHelpDrawer } from "../../common/cardhelpdrawer";
 import { FloatHelp } from "../../../../common/components/floathelp";
 @Component({
     selector: 'app-cor-company-editusers',

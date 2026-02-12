@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace PrimeNGTemplate.Plugins.Core.Helpers
+namespace PrimeNGTemplate.Plugins.COR.Helpers
 {
 	// https://stackoverflow.com/a/10402129
 	public static class HashingHelpers

@@ -1,7 +1,7 @@
 ﻿using DatabaseSharp.Attributes;
 using System.Text.Json.Serialization;
 
-namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Users
+namespace PrimeNGTemplate.Plugins.COR.Models.Shared.Users
 {
 	public class ListUserModel
 	{

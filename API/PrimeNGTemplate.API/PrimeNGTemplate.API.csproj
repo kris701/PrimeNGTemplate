@@ -15,7 +15,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Plugins\Core\PrimeNGTemplate.Plugins.Core\PrimeNGTemplate.Plugins.COR.csproj" />
+		<ProjectReference Include="..\Plugins\COR\PrimeNGTemplate.Plugins.COR\PrimeNGTemplate.Plugins.COR.csproj" />
 	</ItemGroup>
 
 

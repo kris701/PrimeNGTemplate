@@ -1,7 +1,7 @@
-﻿using PrimeNGTemplate.Plugins.Core.Models.Shared.Users;
+﻿using PrimeNGTemplate.Plugins.COR.Models.Shared.Users;
 using System.Text.Json.Serialization;
 
-namespace PrimeNGTemplate.Plugins.Core.Models.Shared.Authentication
+namespace PrimeNGTemplate.Plugins.COR.Models.Shared.Authentication
 {
 	public class AuthenticationOutput
 	{
