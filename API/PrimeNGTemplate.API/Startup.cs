@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
+using PrimeNGTemplate.Plugins.Core.Filters;
 using System.Reflection;
 using Uni.API;
 
@@ -35,24 +36,7 @@ namespace PrimeNGTemplate.API
 					Type = SecuritySchemeType.ApiKey,
 					Scheme = "Bearer"
 				});
-				c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-				{
-					{
-						new OpenApiSecurityScheme
-						{
-							Reference = new OpenApiReference
-							{
-								Type = ReferenceType.SecurityScheme,
-								Id = "Bearer"
-							},
-							Scheme = "oauth2",
-							Name = "Bearer",
-							In = ParameterLocation.Header,
-
-						},
-						new List<string>()
-					}
-				});
+				c.OperationFilter<AuthorizeCheckOperationFilter>();
 			});
 			base.ConfigureServices(services);
 		}

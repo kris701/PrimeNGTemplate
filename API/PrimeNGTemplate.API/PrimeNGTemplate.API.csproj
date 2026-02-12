@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DatabaseSharp" Version="1.5.0" />
-    <PackageReference Include="Uni.API" Version="1.1.4" />
+    <PackageReference Include="DatabaseSharp" Version="1.6.3" />
+    <PackageReference Include="Uni.API" Version="1.2.1" />
   </ItemGroup>
 
 	<ItemGroup>
